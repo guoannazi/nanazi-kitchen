@@ -1,24 +1,1481 @@
-<!doctype html>
-<html lang="">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" href="./favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-    <title>交管12123</title>
-    <script>
-      // 先定义tmriSendMessage，避免webview生命周期调用的时序问题
-      window.tmriSendMessage = function () {}
-    </script>
-    <script type="module" crossorigin src="./assets/index-bZFABXcF.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-CfQlvpqQ.css">
-    <script type="module">import.meta.url;import("_").catch(()=>1);(async function*(){})().next();if(location.protocol!="file:"){window.__vite_is_modern_browser=true}</script>
-    <script type="module">!function(){if(window.__vite_is_modern_browser)return;console.warn("vite: loading legacy chunks, syntax error above and the same error below should be ignored");var e=document.getElementById("vite-legacy-polyfill"),n=document.createElement("script");n.src=e.src,n.onload=function(){System.import(document.getElementById('vite-legacy-entry').getAttribute('data-src'))},document.body.appendChild(n)}();</script>
-  </head>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>娜娜子美妈厨房日记</title>
+<style>
+  :root{
+    --bg:#fdf8f3;
+    --card:#ffffff;
+    --text:#3d2f28;
+    --muted:#9a8a7e;
+    --border:#ece2d6;
+    --baby:#fff4d6;          /* 辅食柔黄 */
+    --baby-accent:#f0b400;
+    --baby-tag:#ffe27a;
+    --adult:#fde8e0;          /* 大人暖橙 */
+    --adult-accent:#e85a3c;
+    --adult-tag:#ffb4a0;
+    --primary:#e85a3c;
+    --primary-dark:#c94322;
+    --green:#7cb342;
+    --shadow:0 2px 10px rgba(120,80,60,.08);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.5;
+    padding-bottom:40px;
+    -webkit-font-smoothing:antialiased;
+  }
+  /* Header */
+  header{
+    background:linear-gradient(135deg,#e85a3c 0%,#f0b400 100%);
+    color:#fff;
+    padding:18px 16px 14px;
+    box-shadow:0 2px 12px rgba(232,90,60,.25);
+  }
+  header h1{margin:0;font-size:20px;font-weight:700;letter-spacing:.5px}
+  header .sub{font-size:12px;opacity:.9;margin-top:3px}
+  header .date-row{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:13px}
+  header .date-row input[type=date]{
+    background:rgba(255,255,255,.25);border:1px solid rgba(255,255,255,.4);
+    color:#fff;border-radius:6px;padding:3px 8px;font-size:13px;
+  }
+  header .date-row input[type=date]::-webkit-calendar-picker-indicator{filter:invert(1)}
 
-  <body>
-    <div id="app"></div>
-    <script nomodule>!function(){var e=document,t=e.createElement("script");if(!("noModule"in t)&&"onbeforeload"in t){var n=!1;e.addEventListener("beforeload",(function(e){if(e.target===t)n=!0;else if(!e.target.hasAttribute("nomodule")||!n)return;e.preventDefault()}),!0),t.type="module",t.src=".",e.head.appendChild(t),t.remove()}}();</script>
-    <script nomodule crossorigin id="vite-legacy-polyfill" src="./assets/polyfills-legacy-B7bYnMQn.js"></script>
-    <script nomodule crossorigin id="vite-legacy-entry" data-src="./assets/index-legacy-CE2qxCVg.js">System.import(document.getElementById('vite-legacy-entry').getAttribute('data-src'))</script>
-  </body>
+  /* Tabs */
+  .tabs{
+    display:flex;background:var(--card);
+    position:sticky;top:0;z-index:10;
+    box-shadow:0 1px 4px rgba(0,0,0,.05);
+  }
+  .tab{
+    flex:1;padding:13px 4px;text-align:center;font-size:13px;font-weight:600;
+    color:var(--muted);border-bottom:3px solid transparent;cursor:pointer;
+    transition:all .2s;
+  }
+  .tab.active{color:var(--primary);border-bottom-color:var(--primary)}
+  .tab:active{background:#f5f0ea}
+
+  /* Container */
+  .container{max-width:760px;margin:0 auto;padding:12px 14px}
+  .panel{display:none}
+  .panel.active{display:block;animation:fade .25s}
+  @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+  /* Section title */
+  .sec-title{
+    font-size:14px;font-weight:700;margin:14px 0 8px;
+    display:flex;align-items:center;gap:6px;
+  }
+  .sec-title .dot{width:8px;height:8px;border-radius:50%}
+
+  /* Search / filter bar */
+  .bar{display:flex;gap:6px;margin:10px 0;flex-wrap:wrap}
+  .bar input[type=text]{
+    flex:1;min-width:140px;padding:8px 10px;border:1px solid var(--border);
+    border-radius:8px;font-size:13px;background:#fff;
+  }
+  .bar select,.bar button.small{
+    padding:8px 10px;border:1px solid var(--border);border-radius:8px;
+    font-size:13px;background:#fff;color:var(--text);cursor:pointer;
+  }
+  .bar button.primary{
+    background:var(--primary);color:#fff;border:none;padding:8px 14px;
+    border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;
+  }
+
+  /* Recipe cards */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+  .card{
+    background:var(--card);border-radius:12px;padding:11px 12px;
+    box-shadow:var(--shadow);border:1px solid var(--border);
+    position:relative;transition:transform .15s,box-shadow .15s;
+  }
+  .card:active{transform:scale(.98)}
+  .card.baby{background:var(--baby);border-color:#f5e4a3}
+  .card.adult{background:var(--adult);border-color:#f5c5b3}
+  .card .name{font-size:15px;font-weight:700;margin-bottom:5px;padding-right:60px}
+  .card .tags{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px}
+  .tag{
+    font-size:11px;padding:2px 7px;border-radius:10px;background:rgba(255,255,255,.7);
+    color:#666;
+  }
+  .card.baby .tag.month{background:var(--baby-accent);color:#fff}
+  .card.adult .tag.cat{background:var(--adult-accent);color:#fff}
+  .tag.spicy{background:#ff5722;color:#fff}
+  .card .ing{font-size:12px;color:#7a6a5e;line-height:1.4}
+  .card .ing b{color:#5a4a3e}
+  .card .note{font-size:11px;color:var(--muted);margin-top:4px;font-style:italic}
+  .card .actions{position:absolute;top:8px;right:8px;display:flex;gap:4px}
+  .card .actions button{
+    background:rgba(255,255,255,.85);border:none;border-radius:6px;
+    width:24px;height:24px;font-size:12px;cursor:pointer;color:#666;
+  }
+  .card .actions button:active{background:#fff}
+
+  /* Modal */
+  .modal-mask{
+    position:fixed;inset:0;background:rgba(40,20,10,.5);z-index:100;
+    display:none;align-items:flex-end;justify-content:center;
+  }
+  .modal-mask.show{display:flex;animation:fade .2s}
+  .modal{
+    background:#fff;width:100%;max-width:560px;max-height:90vh;overflow-y:auto;
+    border-radius:16px 16px 0 0;padding:16px;animation:slideup .25s;
+  }
+  @keyframes slideup{from{transform:translateY(100%)}to{transform:none}}
+  .modal h3{margin:0 0 12px;font-size:17px}
+  .form-row{margin-bottom:10px}
+  .form-row label{display:block;font-size:12px;color:var(--muted);margin-bottom:3px;font-weight:600}
+  .form-row input,.form-row select,.form-row textarea{
+    width:100%;padding:9px 10px;border:1px solid var(--border);border-radius:8px;
+    font-size:14px;font-family:inherit;
+  }
+  .form-row textarea{resize:vertical;min-height:50px}
+  .modal .btns{display:flex;gap:8px;margin-top:14px}
+  .modal .btns button{flex:1;padding:11px;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer}
+  .btn-cancel{background:#f0e8df;color:#666}
+  .btn-save{background:var(--primary);color:#fff}
+
+  /* Today menu */
+  .meal{
+    background:var(--card);border-radius:12px;padding:12px;margin-bottom:10px;
+    box-shadow:var(--shadow);
+  }
+  .meal .head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+  .meal .head .t{font-size:15px;font-weight:700;display:flex;align-items:center;gap:6px}
+  .meal .head .add-btn{
+    background:#fff3ec;border:1px solid #f5c5b3;color:var(--adult-accent);
+    padding:5px 10px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;
+  }
+  .meal-item{
+    display:flex;align-items:center;gap:8px;padding:7px 9px;margin-bottom:5px;
+    border-radius:8px;font-size:14px;
+  }
+  .meal-item.baby{background:var(--baby)}
+  .meal-item.adult{background:var(--adult)}
+  .meal-item.done{opacity:.5;text-decoration:line-through}
+  .meal-item .chk{width:20px;height:20px;flex-shrink:0;cursor:pointer}
+  .meal-item .nm{flex:1}
+  .meal-item .del{background:none;border:none;color:#c00;font-size:16px;cursor:pointer;padding:0 4px}
+  .meal-empty{font-size:12px;color:var(--muted);text-align:center;padding:8px;font-style:italic}
+
+  /* Pick / random */
+  .pick-box{
+    background:var(--card);border-radius:14px;padding:20px;text-align:center;
+    box-shadow:var(--shadow);margin-bottom:14px;
+  }
+  .pick-box .opts{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:14px}
+  .pick-box .opts button{
+    padding:8px 14px;border:1px solid var(--border);border-radius:20px;
+    background:#fff;font-size:13px;cursor:pointer;font-weight:600;
+  }
+  .pick-box .opts button.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+  .shake-btn{
+    background:linear-gradient(135deg,#e85a3c,#f0b400);color:#fff;border:none;
+    padding:14px 30px;border-radius:30px;font-size:16px;font-weight:700;cursor:pointer;
+    box-shadow:0 4px 14px rgba(232,90,60,.35);
+  }
+  .shake-btn:active{transform:scale(.95)}
+  .result-card{
+    margin-top:18px;padding:18px;border-radius:14px;min-height:60px;
+    display:flex;align-items:center;justify-content:center;flex-direction:column;
+    background:#f5f0ea;color:var(--muted);font-size:14px;
+  }
+  .result-card.has{background:var(--card);box-shadow:var(--shadow);color:var(--text)}
+  .result-card .rname{font-size:22px;font-weight:700;margin-bottom:6px}
+  .result-card .rtags{display:flex;gap:5px;flex-wrap:wrap;justify-content:center;margin-bottom:6px}
+  .result-card .ring{font-size:12px;color:var(--muted)}
+  .result-card .add-today{
+    margin-top:10px;background:var(--green);color:#fff;border:none;
+    padding:7px 16px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;
+  }
+  .shake-anim{animation:shake .5s infinite}
+  @keyframes shake{
+    0%,100%{transform:translateX(0)}
+    25%{transform:translateX(-4px) rotate(-2deg)}
+    75%{transform:translateX(4px) rotate(2deg)}
+  }
+  .combo-section{margin-top:18px}
+  .combo-section .lbl{font-size:13px;color:var(--muted);margin-bottom:8px;text-align:center}
+
+  /* Shopping list */
+  .shop-item{
+    display:flex;align-items:center;gap:10px;padding:11px 12px;background:var(--card);
+    border-radius:10px;margin-bottom:6px;box-shadow:var(--shadow);
+  }
+  .shop-item .chk{width:22px;height:22px;cursor:pointer;flex-shrink:0}
+  .shop-item .nm{flex:1;font-size:14px}
+  .shop-item .qt{font-size:12px;color:var(--muted)}
+  .shop-item.done .nm{text-decoration:line-through;opacity:.5}
+  .copy-btn{
+    width:100%;background:var(--green);color:#fff;border:none;padding:12px;
+    border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;margin-top:12px;
+  }
+  .empty-state{text-align:center;padding:30px 10px;color:var(--muted);font-size:13px}
+
+  /* Sync */
+  .sync-bar{
+    display:flex;gap:8px;align-items:center;margin:10px 0;padding:10px 12px;
+    background:linear-gradient(90deg,#fff4e6,#ffe9d6);border-radius:10px;
+    box-shadow:var(--shadow);font-size:13px;
+  }
+  .sync-bar .who{flex:1}
+  .sync-bar input[name=who]{
+    border:1px solid var(--border);border-radius:6px;padding:5px 8px;
+    font-size:13px;width:90px;
+  }
+  .sync-bar button{
+    background:var(--primary);color:#fff;border:none;padding:7px 12px;
+    border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;
+  }
+  .sync-bar button.qr{background:#fff;color:var(--primary);border:1px solid var(--primary)}
+  .sync-status{font-size:11px;color:var(--muted);margin-top:4px}
+  .family-card{
+    background:var(--card);border-radius:12px;padding:11px 12px;margin-bottom:8px;
+    box-shadow:var(--shadow);border-left:4px solid var(--primary);
+  }
+  .family-card .fhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+  .family-card .fname{font-weight:700;font-size:14px}
+  .family-card .ftime{font-size:11px;color:var(--muted)}
+  .family-card .fpick{
+    display:inline-block;background:#fff3ec;padding:3px 9px;border-radius:8px;
+    font-size:13px;margin:2px 4px 2px 0;
+  }
+  .family-card .fpick.baby{background:var(--baby)}
+  .family-card .fnote{font-size:12px;color:#888;margin-top:5px;font-style:italic}
+  .qr-mask{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:300;display:none;align-items:center;justify-content:center}
+  .qr-mask.show{display:flex}
+  .qr-box{background:#fff;padding:20px;border-radius:14px;text-align:center;max-width:90%}
+  .qr-box img{width:240px;height:240px;margin:10px 0}
+  .qr-box .close{margin-top:10px;background:#eee;border:none;padding:8px 20px;border-radius:8px;cursor:pointer}
+
+  /* Toast */
+  .toast{
+    position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
+    background:rgba(40,30,25,.92);color:#fff;padding:9px 18px;border-radius:20px;
+    font-size:13px;z-index:200;opacity:0;transition:opacity .25s,bottom .25s;
+    pointer-events:none;
+  }
+  .toast.show{opacity:1;bottom:30px}
+
+  /* Add-to-today select dropdown inside meal */
+  .add-select-wrap{
+    margin-top:6px;display:none;flex-direction:column;gap:6px;
+  }
+  .add-select-wrap.show{display:flex}
+  .add-select-wrap select{
+    padding:8px;border:1px solid var(--border);border-radius:8px;font-size:13px;
+  }
+  .add-select-wrap .go{
+    background:var(--primary);color:#fff;border:none;padding:8px;border-radius:8px;
+    font-size:13px;font-weight:600;cursor:pointer;
+  }
+
+  @media(max-width:520px){
+    .grid{grid-template-columns:1fr}
+    header h1{font-size:18px}
+    .tab{font-size:12px}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🍳 娜娜子美妈厨房日记</h1>
+  <div class="sub">宝宝辅食 · 大人美食 · 一站搞定</div>
+  <div class="date-row">
+    <span>📅</span>
+    <input type="date" id="todayDate">
+    <span style="flex:1"></span>
+    <button id="clearToday" style="background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.4);color:#fff;padding:4px 10px;border-radius:6px;font-size:12px;cursor:pointer">清空今日</button>
+  </div>
+</header>
+
+<div class="tabs" id="mainTabs">
+  <div class="tab active" data-tab="menu">📋 今日菜单</div>
+  <div class="tab" data-tab="recipes">📚 菜谱库</div>
+  <div class="tab" data-tab="pick">🎲 点餐抽餐</div>
+  <div class="tab" data-tab="family">👨‍👩‍👧 家人点餐</div>
+  <div class="tab" data-tab="shop">🛒 食材清单</div>
+</div>
+
+<!-- 家人点餐模式（简化版） -->
+<div id="familyMode" style="display:none">
+  <div style="padding:14px;background:linear-gradient(135deg,#e85a3c,#f0b400);color:#fff">
+    <div style="font-size:17px;font-weight:700">🍴 娜娜子美妈厨房 · 家人点餐</div>
+    <div style="font-size:12px;opacity:.9;margin-top:3px">选你想吃的菜，提交后妈妈就能看到</div>
+  </div>
+  <div style="padding:12px 14px">
+    <div style="display:flex;gap:8px;margin-bottom:12px;align-items:center">
+      <span style="font-size:13px;font-weight:600">👤 我是：</span>
+      <input type="text" id="fmWho" placeholder="爸爸/奶奶/姐姐..." style="flex:1;padding:8px 10px;border:1px solid var(--border);border-radius:8px;font-size:14px">
+    </div>
+    <div class="bar">
+      <input type="text" id="fmSearch" placeholder="🔍 搜索菜名...">
+      <select id="fmType">
+        <option value="all">全部</option>
+        <option value="baby">👶 宝宝辅食</option>
+        <option value="adult">👩 大人餐</option>
+      </select>
+    </div>
+    <div id="fmList" style="margin-top:10px"></div>
+    <div id="fmCart" style="position:fixed;bottom:0;left:0;right:0;background:#fff;padding:10px 14px;box-shadow:0 -2px 10px rgba(0,0,0,.1);z-index:20;display:none">
+      <div id="fmCartItems" style="max-height:120px;overflow-y:auto;margin-bottom:8px"></div>
+      <button id="fmSubmitBtn" onclick="fmSubmit()" style="width:100%;background:var(--primary);color:#fff;border:none;padding:12px;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer">提交点餐</button>
+    </div>
+    <div style="height:140px"></div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- 今日菜单 -->
+  <div class="panel active" id="panel-menu">
+    <div id="mealsList"></div>
+  </div>
+
+  <!-- 菜谱库 -->
+  <div class="panel" id="panel-recipes">
+    <div class="bar">
+      <input type="text" id="searchInput" placeholder="🔍 搜索菜名/食材...">
+      <select id="filterType">
+        <option value="all">全部</option>
+        <option value="baby">👶 宝宝辅食</option>
+        <option value="adult">👩 大人餐</option>
+      </select>
+      <select id="filterCat">
+        <option value="all">全部分类</option>
+      </select>
+      <button class="primary" onclick="openRecipeModal()">+ 新增</button>
+    </div>
+
+    <div class="sec-title"><span class="dot" style="background:var(--baby-accent)"></span>👶 宝宝辅食</div>
+    <div class="grid" id="babyGrid"></div>
+
+    <div class="sec-title"><span class="dot" style="background:var(--adult-accent)"></span>👩 大人餐</div>
+    <div class="grid" id="adultGrid"></div>
+  </div>
+
+  <!-- 点餐抽餐 -->
+  <div class="panel" id="panel-pick">
+    <div class="pick-box">
+      <div style="font-size:14px;font-weight:700;margin-bottom:10px">🎲 随机抽一道菜</div>
+      <div class="opts" id="pickTypeOpts">
+        <button data-v="baby">👶 宝宝</button>
+        <button data-v="adult" class="active">👩 大人</button>
+        <button data-v="all">全部</button>
+      </div>
+      <button class="shake-btn" onclick="doShake()">🎲 摇一摇</button>
+      <div class="result-card" id="resultCard">点"摇一摇"看看今天吃啥～</div>
+    </div>
+
+    <div class="combo-section">
+      <div class="lbl">—— 智能搭配（大人餐两菜一汤）——</div>
+      <div style="text-align:center">
+        <button class="shake-btn" onclick="doCombo()">🍲 一键搭配</button>
+      </div>
+      <div class="result-card" id="comboCard" style="margin-top:12px">点"一键搭配"生成菜单组合</div>
+    </div>
+  </div>
+
+  <!-- 食材清单 -->
+  <div class="panel" id="panel-shop">
+    <div class="sec-title"><span class="dot" style="background:var(--green)"></span>今日所需食材</div>
+    <div id="shopList"></div>
+    <button class="copy-btn" onclick="copyShopList()">📋 一键复制清单（发微信）</button>
+  </div>
+
+  <!-- 家人点餐 -->
+  <div class="panel" id="panel-family">
+    <div class="sync-bar">
+      <span>👤</span>
+      <input type="text" name="who" id="whoInput" placeholder="我是谁（如：爸爸）">
+      <button class="qr" onclick="showQR()">📱 分享二维码</button>
+    </div>
+    <div class="sync-status" id="syncStatus">⏳ 未同步</div>
+
+    <div class="sec-title" style="margin-top:14px"><span class="dot" style="background:var(--primary)"></span>家人点餐汇总</div>
+    <div style="display:flex;gap:8px;margin-bottom:10px">
+      <button class="copy-btn" style="margin:0;flex:1" onclick="syncFamilyOrders()">🔄 同步家人点餐</button>
+      <button class="copy-btn" style="margin:0;flex:1;background:var(--primary)" onclick="importFamilyOrders()">📥 全部导入今日菜单</button>
+    </div>
+    <div id="familyList"></div>
+  </div>
+
+</div>
+
+<!-- QR Modal -->
+<div class="qr-mask" id="qrMask" onclick="if(event.target===this)closeQR()">
+  <div class="qr-box">
+    <div style="font-size:15px;font-weight:700">📱 家人扫码点餐</div>
+    <div style="font-size:12px;color:#888;margin-top:4px">微信扫一扫，直接点餐提交</div>
+    <img id="qrImg" src="" alt="二维码">
+    <div style="font-size:11px;color:#888;word-break:break-all" id="qrUrl"></div>
+    <button class="close" onclick="closeQR()">关闭</button>
+  </div>
+</div>
+
+<!-- Modal: recipe form -->
+<div class="modal-mask" id="recipeModal">
+  <div class="modal">
+    <h3 id="modalTitle">新增菜谱</h3>
+    <input type="hidden" id="recipeId">
+    <div class="form-row">
+      <label>类型</label>
+      <select id="fType" onchange="onTypeChange()">
+        <option value="baby">👶 宝宝辅食</option>
+        <option value="adult">👩 大人餐</option>
+      </select>
+    </div>
+    <div class="form-row">
+      <label>菜名</label>
+      <input type="text" id="fName" placeholder="如：江西辣鸡爪">
+    </div>
+    <div class="form-row" id="rowMonth">
+      <label>月龄段</label>
+      <select id="fMonth">
+        <option value="8M+">8M+</option>
+        <option value="12M+">12M+</option>
+        <option value="18M+" selected>18M+</option>
+      </select>
+    </div>
+    <div class="form-row" id="rowCook">
+      <label>烹饪方式</label>
+      <select id="fCook">
+        <option value="蒸">蒸</option>
+        <option value="煮">煮</option>
+        <option value="炖">炖</option>
+        <option value="烤">烤</option>
+        <option value="炒">炒</option>
+        <option value="煎">煎</option>
+      </select>
+    </div>
+    <div class="form-row" id="rowCat" style="display:none">
+      <label>分类</label>
+      <select id="fCat">
+        <option value="江西辣鸡爪">江西辣鸡爪</option>
+        <option value="面食">面食</option>
+        <option value="排骨">排骨</option>
+        <option value="鸡翅">鸡翅</option>
+        <option value="鸡鸭">鸡鸭</option>
+        <option value="鱼虾海鲜">鱼虾海鲜</option>
+        <option value="家常小炒">家常小炒</option>
+        <option value="汤羹">汤羹</option>
+        <option value="村驴菜系">村驴菜系</option>
+        <option value="其他">其他</option>
+      </select>
+    </div>
+    <div class="form-row" id="rowSpicy" style="display:none">
+      <label>辣度</label>
+      <select id="fSpicy">
+        <option value="不辣">不辣</option>
+        <option value="微辣">微辣</option>
+        <option value="中辣">中辣</option>
+        <option value="重辣">重辣</option>
+      </select>
+    </div>
+    <div class="form-row">
+      <label>主要食材（用逗号分隔）</label>
+      <input type="text" id="fIng" placeholder="如：鸡爪,小米椒,蒜">
+    </div>
+    <div class="form-row" id="rowSource">
+      <label>来源（可选）</label>
+      <input type="text" id="fSource" placeholder="如：村驴视频">
+    </div>
+    <div class="form-row">
+      <label>备注（可选）</label>
+      <textarea id="fNote" placeholder="做法要点、宝宝注意事项等"></textarea>
+    </div>
+    <div class="btns">
+      <button class="btn-cancel" onclick="closeRecipeModal()">取消</button>
+      <button class="btn-save" onclick="saveRecipe()">保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: add to today -->
+<div class="modal-mask" id="addTodayModal">
+  <div class="modal">
+    <h3>添加到 <span id="addMealName"></span></h3>
+    <div class="form-row">
+      <label>选择菜品</label>
+      <select id="addRecipeSelect"></select>
+    </div>
+    <div class="btns">
+      <button class="btn-cancel" onclick="closeAddToday()">取消</button>
+      <button class="btn-save" onclick="confirmAddToday()">添加</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============ 预填菜谱数据 ============ */
+const SEED_RECIPES = [
+  // 宝宝辅食（18个月+，可吃软烂大人饭，去掉基础泥类）
+  {id:'b1',type:'baby',name:'番茄鸡蛋面',month:'18M+',cook:'煮',ing:'婴儿面条,番茄,鸡蛋,青菜',source:'',note:'酸甜开胃，宝宝最爱'},
+  {id:'b2',type:'baby',name:'虾仁豆腐蒸蛋',month:'18M+',cook:'蒸',ing:'虾仁,嫩豆腐,鸡蛋',source:'',note:'高蛋白软嫩，检查虾过敏'},
+  {id:'b3',type:'baby',name:'山药排骨汤',month:'18M+',cook:'炖',ing:'山药,排骨,枸杞,姜',source:'',note:'健脾养胃，汤可下面'},
+  {id:'b4',type:'baby',name:'蔬菜蛋饼',month:'18M+',cook:'煎',ing:'鸡蛋,胡萝卜,西葫芦,面粉',source:'',note:'手指食物，锻炼抓握'},
+  {id:'b5',type:'baby',name:'胡萝卜肉末焖饭',month:'18M+',cook:'炖',ing:'大米,胡萝卜,猪肉末,洋葱',source:'',note:'一锅出，营养均衡'},
+  {id:'b6',type:'baby',name:'鳕鱼蔬菜粥',month:'18M+',cook:'煮',ing:'鳕鱼,大米,西兰花,姜',source:'',note:'DHA丰富，去刺'},
+  {id:'b7',type:'baby',name:'鸡肝菠菜粥',month:'18M+',cook:'煮',ing:'鸡肝,菠菜,大米,柠檬',source:'',note:'补铁补血，每周1-2次'},
+  {id:'b8',type:'baby',name:'番茄牛肉面',month:'18M+',cook:'煮',ing:'婴儿面条,牛肉末,番茄,洋葱',source:'',note:'补铁补蛋白'},
+  {id:'b9',type:'baby',name:'南瓜小米粥',month:'18M+',cook:'煮',ing:'南瓜,小米',source:'',note:'养胃好消化'},
+  {id:'b10',type:'baby',name:'三文鱼西兰花饭',month:'18M+',cook:'蒸',ing:'三文鱼,西兰花,大米',source:'',note:'Omega-3丰富'},
+  {id:'b11',type:'baby',name:'猪肉白菜小馄饨',month:'18M+',cook:'煮',ing:'馄饨皮,猪肉末,白菜',source:'',note:'可多做冷冻，随吃随煮'},
+  {id:'b12',type:'baby',name:'土豆胡萝卜炖牛肉',month:'18M+',cook:'炖',ing:'牛肉,土豆,胡萝卜,洋葱',source:'',note:'炖烂一些，宝宝易嚼'},
+  {id:'b13',type:'baby',name:'奶香玉米烙',month:'18M+',cook:'煎',ing:'玉米粒,面粉,牛奶',source:'',note:'香甜软糯，加餐首选'},
+  {id:'b14',type:'baby',name:'鸡蛋疙瘩汤',month:'18M+',cook:'煮',ing:'面粉,鸡蛋,番茄,青菜',source:'',note:'快手早餐，易消化'},
+  {id:'b15',type:'baby',name:'鲜虾蔬菜饭团',month:'18M+',cook:'蒸',ing:'虾仁,胡萝卜,大米,海苔',source:'',note:'可爱造型，宝宝更爱'},
+  // 大人餐
+  // —— 江西辣鸡爪 / 凉拌 ——
+  {id:'a1',type:'adult',name:'江西辣鸡爪',cat:'江西辣鸡爪',spicy:'重辣',ing:'鸡爪,小米椒,蒜,生抽,醋,柠檬',source:'收藏',note:'先煮后拌，冷藏更入味'},
+  {id:'a2',type:'adult',name:'柠檬无骨鸡爪',cat:'江西辣鸡爪',spicy:'中辣',ing:'无骨鸡爪,柠檬,小米椒,蒜,香菜',source:'收藏',note:'懒人版，去骨更过瘾'},
+  {id:'a3',type:'adult',name:'蒜香鸡爪',cat:'江西辣鸡爪',spicy:'微辣',ing:'鸡爪,蒜,生抽,蚝油,辣椒',source:'收藏',note:'蒜香浓郁'},
+  {id:'a4',type:'adult',name:'泡椒鸡爪',cat:'江西辣鸡爪',spicy:'重辣',ing:'鸡爪,泡椒,芹菜,胡萝卜,白醋',source:'收藏',note:'冷藏过夜更入味'},
+  // —— 面食 ——
+  {id:'a5',type:'adult',name:'南昌拌粉',cat:'面食',spicy:'中辣',ing:'米粉,花生米,萝卜干,辣椒酱',source:'收藏',note:'米粉提前泡软'},
+  {id:'a6',type:'adult',name:'江西炒粉',cat:'面食',spicy:'中辣',ing:'米粉,瘦肉,青菜,辣椒',source:'收藏',note:'大火快炒'},
+  {id:'a7',type:'adult',name:'兰州拉面',cat:'面食',spicy:'微辣',ing:'拉面,牛肉,萝卜,香菜,辣油',source:'收藏',note:'汤要清亮'},
+  {id:'a8',type:'adult',name:'葱油拌面',cat:'面食',spicy:'不辣',ing:'面条,小葱,生抽,糖,油',source:'收藏',note:'葱要炸到焦香'},
+  {id:'a9',type:'adult',name:'武汉热干面',cat:'面食',spicy:'微辣',ing:'碱面,芝麻酱,萝卜丁,香葱',source:'收藏',note:'芝麻酱是灵魂'},
+  {id:'a10',type:'adult',name:'油泼面',cat:'面食',spicy:'中辣',ing:'宽面,辣椒面,蒜,葱,生抽,醋',source:'收藏',note:'热油浇辣椒面刺啦一声'},
+  {id:'a11',type:'adult',name:'酸辣粉',cat:'面食',spicy:'重辣',ing:'红薯粉,花生,黄豆,醋,辣椒',source:'收藏',note:'酸辣开胃'},
+  {id:'a12',type:'adult',name:'炸酱面',cat:'面食',spicy:'不辣',ing:'面条,五花肉末,黄酱,黄瓜丝',source:'收藏',note:'老北京做法'},
+  // —— 排骨 ——
+  {id:'a13',type:'adult',name:'红烧排骨',cat:'排骨',spicy:'微辣',ing:'排骨,生抽,老抽,冰糖,八角',source:'收藏',note:'炒糖色是关键'},
+  {id:'a14',type:'adult',name:'糖醋排骨',cat:'排骨',spicy:'不辣',ing:'排骨,醋,糖,生抽,料酒',source:'收藏',note:'酸甜口，宝宝可吃（少糖版）'},
+  {id:'a15',type:'adult',name:'蒜香排骨',cat:'排骨',spicy:'不辣',ing:'排骨,大蒜,生抽,蜂蜜',source:'收藏',note:'蒜要剁碎腌制'},
+  {id:'a16',type:'adult',name:'粉蒸排骨',cat:'排骨',spicy:'不辣',ing:'排骨,蒸肉米粉,红薯,土豆',source:'收藏',note:'垫底红薯吸油增香'},
+  {id:'a17',type:'adult',name:'豆豉排骨',cat:'排骨',spicy:'微辣',ing:'排骨,豆豉,蒜,生抽,辣椒',source:'收藏',note:'蒸出来超嫩'},
+  {id:'a18',type:'adult',name:'排骨莲藕汤',cat:'排骨',spicy:'不辣',ing:'排骨,莲藕,姜,枸杞',source:'收藏',note:'湖北做法，藕要粉'},
+  // —— 鸡翅 ——
+  {id:'a19',type:'adult',name:'可乐鸡翅',cat:'鸡翅',spicy:'不辣',ing:'鸡翅,可乐,生抽,姜',source:'收藏',note:'收汁要浓稠'},
+  {id:'a20',type:'adult',name:'孜然鸡翅',cat:'鸡翅',spicy:'中辣',ing:'鸡翅,孜然,辣椒粉,生抽',source:'收藏',note:'烤箱版更香'},
+  {id:'a21',type:'adult',name:'柠檬鸡翅',cat:'鸡翅',spicy:'微辣',ing:'鸡翅,柠檬,蜂蜜,生抽',source:'收藏',note:'柠檬去腥增香'},
+  {id:'a22',type:'adult',name:'奥尔良烤翅',cat:'鸡翅',spicy:'微辣',ing:'鸡翅,奥尔良腌料,蜂蜜',source:'收藏',note:'烤箱200度20分钟'},
+  {id:'a23',type:'adult',name:'板栗烧鸡',cat:'鸡翅',spicy:'微辣',ing:'鸡翅,板栗,生抽,冰糖,八角',source:'收藏',note:'板栗提前去皮'},
+  // —— 鸡鸭 ——
+  {id:'a24',type:'adult',name:'辣子鸡',cat:'鸡鸭',spicy:'重辣',ing:'鸡腿肉,干辣椒,花椒,花生,芝麻',source:'收藏',note:'辣椒比肉多是灵魂'},
+  {id:'a25',type:'adult',name:'宫保鸡丁',cat:'鸡鸭',spicy:'中辣',ing:'鸡胸肉,花生,干辣椒,花椒,葱',source:'收藏',note:'川菜经典'},
+  {id:'a26',type:'adult',name:'口水鸡',cat:'鸡鸭',spicy:'中辣',ing:'鸡腿,花生碎,芝麻,辣椒油,花椒',source:'收藏',note:'鸡肉要冰水激凉'},
+  {id:'a27',type:'adult',name:'啤酒鸭',cat:'鸡鸭',spicy:'微辣',ing:'鸭肉,啤酒,土豆,青椒,姜',source:'收藏',note:'啤酒去腥增香'},
+  {id:'a28',type:'adult',name:'啤酒鸡',cat:'鸡鸭',spicy:'微辣',ing:'整鸡,啤酒,土豆,生抽,姜',source:'收藏',note:'一锅出，下饭'},
+  // —— 鱼虾海鲜 ——
+  {id:'a29',type:'adult',name:'蒜蓉粉丝蒸虾',cat:'鱼虾海鲜',spicy:'微辣',ing:'虾,粉丝,蒜,生抽',source:'收藏',note:'蒸5分钟即可'},
+  {id:'a30',type:'adult',name:'油焖大虾',cat:'鱼虾海鲜',spicy:'不辣',ing:'虾,番茄酱,生抽,糖,葱',source:'收藏',note:'色泽红亮'},
+  {id:'a31',type:'adult',name:'清蒸鲈鱼',cat:'鱼虾海鲜',spicy:'不辣',ing:'鲈鱼,葱,姜,蒸鱼豉油',source:'收藏',note:'8分钟，肉质嫩'},
+  {id:'a32',type:'adult',name:'红烧带鱼',cat:'鱼虾海鲜',spicy:'微辣',ing:'带鱼,生抽,老抽,糖,面粉',source:'收藏',note:'先煎再烧'},
+  {id:'a33',type:'adult',name:'香辣虾',cat:'鱼虾海鲜',spicy:'重辣',ing:'虾,土豆,芹菜,干辣椒,花椒',source:'收藏',note:'先炸后炒'},
+  {id:'a34',type:'adult',name:'蒜蓉生蚝',cat:'鱼虾海鲜',spicy:'不辣',ing:'生蚝,蒜,粉丝,小米椒',source:'收藏',note:'烤箱版'},
+  // —— 家常小炒 ——
+  {id:'a35',type:'adult',name:'辣椒炒肉',cat:'家常小炒',spicy:'中辣',ing:'五花肉,青椒,蒜,生抽',source:'收藏',note:'湖南下饭菜'},
+  {id:'a36',type:'adult',name:'回锅肉',cat:'家常小炒',spicy:'中辣',ing:'五花肉,蒜苗,豆瓣酱,豆豉',source:'收藏',note:'肉要先煮再炒'},
+  {id:'a37',type:'adult',name:'麻婆豆腐',cat:'家常小炒',spicy:'中辣',ing:'嫩豆腐,肉末,豆瓣酱,花椒,蒜',source:'收藏',note:'麻辣烫鲜香'},
+  {id:'a38',type:'adult',name:'干煸四季豆',cat:'家常小炒',spicy:'中辣',ing:'四季豆,肉末,干辣椒,蒜',source:'收藏',note:'豆角一定要煸透'},
+  {id:'a39',type:'adult',name:'地三鲜',cat:'家常小炒',spicy:'微辣',ing:'茄子,土豆,青椒,蒜,生抽',source:'收藏',note:'东北经典'},
+  {id:'a40',type:'adult',name:'西红柿炒鸡蛋',cat:'家常小炒',spicy:'不辣',ing:'番茄,鸡蛋,糖,葱',source:'收藏',note:'国民家常菜，宝宝也能吃'},
+  {id:'a41',type:'adult',name:'酸辣土豆丝',cat:'家常小炒',spicy:'中辣',ing:'土豆,干辣椒,醋,花椒,葱',source:'收藏',note:'切丝要细，泡水去淀粉'},
+  {id:'a42',type:'adult',name:'肉末茄子',cat:'家常小炒',spicy:'微辣',ing:'茄子,猪肉末,蒜,生抽,豆瓣酱',source:'收藏',note:'茄子先蒸再炒省油'},
+  {id:'a43',type:'adult',name:'干锅花菜',cat:'家常小炒',spicy:'微辣',ing:'花菜,五花肉,干辣椒,蒜,生抽',source:'收藏',note:'花菜不要焯水'},
+  {id:'a44',type:'adult',name:'鱼香肉丝',cat:'家常小炒',spicy:'微辣',ing:'里脊肉,木耳,胡萝卜,笋,豆瓣酱',source:'收藏',note:'鱼香味靠泡椒'},
+  // —— 汤羹 ——
+  {id:'a45',type:'adult',name:'瓦罐汤',cat:'汤羹',spicy:'不辣',ing:'排骨,莲藕,姜,盐',source:'收藏',note:'小火慢炖3小时'},
+  {id:'a46',type:'adult',name:'番茄蛋花汤',cat:'汤羹',spicy:'不辣',ing:'番茄,鸡蛋,葱,香油',source:'收藏',note:'快手汤3分钟'},
+  {id:'a47',type:'adult',name:'酸萝卜老鸭汤',cat:'汤羹',spicy:'不辣',ing:'鸭肉,酸萝卜,姜,枸杞',source:'收藏',note:'酸爽开胃'},
+  {id:'a48',type:'adult',name:'玉米排骨汤',cat:'汤羹',spicy:'不辣',ing:'排骨,玉米,胡萝卜,姜',source:'收藏',note:'清甜不腻'},
+  {id:'a49',type:'adult',name:'鲫鱼豆腐汤',cat:'汤羹',spicy:'不辣',ing:'鲫鱼,豆腐,姜,葱,料酒',source:'收藏',note:'汤奶白的关键是先煎鱼'},
+  // —— 村驴菜系 ——
+  {id:'a50',type:'adult',name:'村驴红烧肉',cat:'村驴菜系',spicy:'微辣',ing:'五花肉,冰糖,生抽,八角,桂皮',source:'村驴视频',note:'肥而不腻，下饭神器'},
+  {id:'a51',type:'adult',name:'村驴水煮鱼',cat:'村驴菜系',spicy:'重辣',ing:'草鱼,豆芽,干辣椒,花椒,豆瓣酱',source:'村驴视频',note:'鱼片要嫩滑'},
+  {id:'a52',type:'adult',name:'村驴干煸豆角',cat:'村驴菜系',spicy:'中辣',ing:'四季豆,肉末,干辣椒,蒜',source:'村驴视频',note:'豆角一定要煸透'},
+  {id:'a53',type:'adult',name:'村驴地三鲜',cat:'村驴菜系',spicy:'微辣',ing:'茄子,土豆,青椒,蒜,生抽',source:'村驴视频',note:'东北经典，村驴做法'},
+  {id:'a54',type:'adult',name:'村驴小炒黄牛肉',cat:'村驴菜系',spicy:'中辣',ing:'黄牛肉,小米椒,芹菜,蒜',source:'村驴视频',note:'大火快炒，肉要嫩'},
+  {id:'a55',type:'adult',name:'村驴酸菜鱼',cat:'村驴菜系',spicy:'中辣',ing:'草鱼,酸菜,泡椒,花椒,蒜',source:'村驴视频',note:'酸菜要炒香'},
+  {id:'a56',type:'adult',name:'村驴蒜泥白肉',cat:'村驴菜系',spicy:'中辣',ing:'五花肉,蒜泥,辣椒油,生抽,醋',source:'村驴视频',note:'肉煮8成熟，冰水激凉'},
+];
+
+/* ============ 数据层 ============ */
+const STORAGE_KEY = 'kitchen_recipes_v2';
+const MENU_KEY = 'kitchen_menu_v1';
+const SHOP_KEY = 'kitchen_shop_v1';
+
+let recipes = loadRecipes();
+let todayMenu = loadMenu();  // {date, meals:{breakfast:[],lunch:[],dinner:[],snack:[]}}
+let shopChecked = loadShop();
+let pickType = 'adult';
+let currentAddMeal = null;
+
+function loadRecipes(){
+  try{
+    const s = localStorage.getItem(STORAGE_KEY);
+    if(s) return JSON.parse(s);
+  }catch(e){}
+  return JSON.parse(JSON.stringify(SEED_RECIPES));
+}
+function saveRecipes(){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(recipes));
+}
+function loadMenu(){
+  try{
+    const s = localStorage.getItem(MENU_KEY);
+    if(s) return JSON.parse(s);
+  }catch(e){}
+  return null;
+}
+function saveMenu(){
+  localStorage.setItem(MENU_KEY, JSON.stringify(todayMenu));
+}
+function loadShop(){
+  try{
+    const s = localStorage.getItem(SHOP_KEY);
+    if(s) return JSON.parse(s);
+  }catch(e){}
+  return {};
+}
+function saveShop(){
+  localStorage.setItem(SHOP_KEY, JSON.stringify(shopChecked));
+}
+
+/* ============ 工具 ============ */
+function toast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(()=>t.classList.remove('show'),1800);
+}
+function uid(){
+  return 'r'+Date.now()+Math.floor(Math.random()*1000);
+}
+function todayStr(){
+  const d = new Date();
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+}
+function getEmptyMenu(date){
+  return {date, breakfast:[], lunch:[], dinner:[], snack:[]};
+}
+const MEALS = [
+  {key:'breakfast', label:'🌅 早餐'},
+  {key:'lunch', label:'☀️ 午餐'},
+  {key:'dinner', label:'🌙 晚餐'},
+  {key:'snack', label:'🍎 加餐'},
+];
+
+/* ============ 初始化 ============ */
+let FAMILY_MODE = false;
+let fmCart = [];  // 家人购物车 [{recipeId, name, type, meal, note}]
+
+function init(){
+  // 检测家人点餐模式
+  const params = new URLSearchParams(window.location.search);
+  FAMILY_MODE = params.get('mode') === 'family';
+
+  if(FAMILY_MODE){
+    document.getElementById('mainTabs').style.display = 'none';
+    document.querySelector('header').style.display = 'none';
+    document.querySelector('.container').style.display = 'none';
+    document.getElementById('familyMode').style.display = 'block';
+    initFamilyMode();
+    return;
+  }
+
+  const dateInput = document.getElementById('todayDate');
+  dateInput.value = todayStr();
+  ensureTodayMenu();
+  bindEvents();
+  // 恢复家人身份
+  const who = localStorage.getItem('kitchen_who');
+  if(who) document.getElementById('whoInput').value = who;
+  document.getElementById('whoInput').oninput = (e)=>{
+    localStorage.setItem('kitchen_who', e.target.value);
+  };
+  renderAll();
+  // 首次自动同步一次
+  setTimeout(syncFamilyOrders, 500);
+}
+function ensureTodayMenu(){
+  const date = document.getElementById('todayDate').value;
+  if(!todayMenu || todayMenu.date !== date){
+    todayMenu = getEmptyMenu(date);
+    saveMenu();
+  }
+}
+function bindEvents(){
+  // tabs
+  document.querySelectorAll('.tab').forEach(t=>{
+    t.onclick = ()=>{
+      document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+      document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));
+      t.classList.add('active');
+      document.getElementById('panel-'+t.dataset.tab).classList.add('active');
+      if(t.dataset.tab==='shop') renderShop();
+      if(t.dataset.tab==='family') renderFamily();
+    };
+  });
+  // date change
+  document.getElementById('todayDate').onchange = ()=>{
+    ensureTodayMenu();
+    renderMeals();
+  };
+  // clear today
+  document.getElementById('clearToday').onclick = ()=>{
+    if(confirm('确定清空今日菜单吗？')){
+      todayMenu = getEmptyMenu(document.getElementById('todayDate').value);
+      saveMenu();
+      renderMeals();
+      toast('已清空');
+    }
+  };
+  // search & filter
+  document.getElementById('searchInput').oninput = renderRecipes;
+  document.getElementById('filterType').onchange = ()=>{
+    updateFilterCat();
+    renderRecipes();
+  };
+  document.getElementById('filterCat').onchange = renderRecipes;
+  // pick type
+  document.querySelectorAll('#pickTypeOpts button').forEach(b=>{
+    b.onclick = ()=>{
+      document.querySelectorAll('#pickTypeOpts button').forEach(x=>x.classList.remove('active'));
+      b.classList.add('active');
+      pickType = b.dataset.v;
+    };
+  });
+}
+
+function renderAll(){
+  updateFilterCat();
+  renderRecipes();
+  renderMeals();
+}
+
+/* ============ 菜谱库 ============ */
+function updateFilterCat(){
+  const type = document.getElementById('filterType').value;
+  const sel = document.getElementById('filterCat');
+  sel.innerHTML = '<option value="all">全部分类</option>';
+  let cats = [];
+  if(type === 'baby'){
+    cats = ['8M+','12M+','18M+'];
+    cats.forEach(c=>{
+      const o = document.createElement('option');
+      o.value = c; o.textContent = '月龄 '+c;
+      sel.appendChild(o);
+    });
+  }else if(type === 'adult'){
+    cats = [...new Set(recipes.filter(r=>r.type==='adult').map(r=>r.cat))].sort();
+    cats.forEach(c=>{
+      const o = document.createElement('option');
+      o.value = c; o.textContent = c;
+      sel.appendChild(o);
+    });
+  }else{
+    // both
+    const months = ['8M+','12M+','18M+'];
+    months.forEach(c=>{
+      const o = document.createElement('option');
+      o.value = 'm_'+c; o.textContent = '月龄 '+c;
+      sel.appendChild(o);
+    });
+    const adultCats = [...new Set(recipes.filter(r=>r.type==='adult').map(r=>r.cat))].sort();
+    adultCats.forEach(c=>{
+      const o = document.createElement('option');
+      o.value = 'a_'+c; o.textContent = c;
+      sel.appendChild(o);
+    });
+  }
+}
+
+function renderRecipes(){
+  const q = document.getElementById('searchInput').value.trim().toLowerCase();
+  const type = document.getElementById('filterType').value;
+  const cat = document.getElementById('filterCat').value;
+  const babyGrid = document.getElementById('babyGrid');
+  const adultGrid = document.getElementById('adultGrid');
+  babyGrid.innerHTML = '';
+  adultGrid.innerHTML = '';
+
+  const filtered = recipes.filter(r=>{
+    if(q && !r.name.toLowerCase().includes(q) && !(r.ing||'').toLowerCase().includes(q)) return false;
+    if(type !== 'all' && r.type !== type) return false;
+    if(cat !== 'all'){
+      if(type === 'all'){
+        if(cat.startsWith('m_')){
+          if(r.type !== 'baby' || r.month !== cat.slice(2)) return false;
+        }else if(cat.startsWith('a_')){
+          if(r.type !== 'adult' || r.cat !== cat.slice(2)) return false;
+        }
+      }else if(type === 'baby'){
+        if(r.type !== 'baby' || r.month !== cat) return false;
+      }else if(type === 'adult'){
+        if(r.type !== 'adult' || r.cat !== cat) return false;
+      }
+    }
+    return true;
+  });
+
+  const babies = filtered.filter(r=>r.type==='baby');
+  const adults = filtered.filter(r=>r.type==='adult');
+
+  if(babies.length === 0) babyGrid.innerHTML = '<div class="empty-state">暂无宝宝辅食</div>';
+  babies.forEach(r=>babyGrid.appendChild(makeCard(r)));
+  if(adults.length === 0) adultGrid.innerHTML = '<div class="empty-state">暂无大人餐</div>';
+  adults.forEach(r=>adultGrid.appendChild(makeCard(r)));
+}
+
+function makeCard(r){
+  const div = document.createElement('div');
+  div.className = 'card '+r.type;
+  let tags = '';
+  if(r.type==='baby'){
+    tags += `<span class="tag month">${r.month}</span>`;
+    tags += `<span class="tag">${r.cook}</span>`;
+  }else{
+    tags += `<span class="tag cat">${r.cat||'其他'}</span>`;
+    if(r.spicy && r.spicy !== '不辣') tags += `<span class="tag spicy">${r.spicy}</span>`;
+  }
+  div.innerHTML = `
+    <div class="actions">
+      <button onclick="editRecipe('${r.id}')" title="编辑">✏️</button>
+      <button onclick="delRecipe('${r.id}')" title="删除">🗑️</button>
+    </div>
+    <div class="name">${escapeHtml(r.name)}</div>
+    <div class="tags">${tags}</div>
+    <div class="ing"><b>食材：</b>${escapeHtml(r.ing||'未填')}</div>
+    ${r.source ? `<div class="ing" style="margin-top:3px"><b>来源：</b>${escapeHtml(r.source)}</div>` : ''}
+    ${r.note ? `<div class="note">${escapeHtml(r.note)}</div>` : ''}
+  `;
+  return div;
+}
+
+function escapeHtml(s){
+  return String(s||'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+/* ============ 菜谱表单 ============ */
+function openRecipeModal(id){
+  document.getElementById('recipeId').value = id || '';
+  document.getElementById('modalTitle').textContent = id ? '编辑菜谱' : '新增菜谱';
+  if(id){
+    const r = recipes.find(x=>x.id===id);
+    if(!r) return;
+    document.getElementById('fType').value = r.type;
+    document.getElementById('fName').value = r.name;
+    if(r.type==='baby'){
+      document.getElementById('fMonth').value = r.month;
+      document.getElementById('fCook').value = r.cook;
+    }else{
+      document.getElementById('fCat').value = r.cat || '其他';
+      document.getElementById('fSpicy').value = r.spicy || '不辣';
+    }
+    document.getElementById('fIng').value = r.ing || '';
+    document.getElementById('fSource').value = r.source || '';
+    document.getElementById('fNote').value = r.note || '';
+  }else{
+    document.getElementById('fType').value = 'baby';
+    document.getElementById('fName').value = '';
+    document.getElementById('fMonth').value = '18M+';
+    document.getElementById('fCook').value = '蒸';
+    document.getElementById('fCat').value = '其他';
+    document.getElementById('fSpicy').value = '不辣';
+    document.getElementById('fIng').value = '';
+    document.getElementById('fSource').value = '';
+    document.getElementById('fNote').value = '';
+  }
+  onTypeChange();
+  document.getElementById('recipeModal').classList.add('show');
+}
+function closeRecipeModal(){
+  document.getElementById('recipeModal').classList.remove('show');
+}
+function onTypeChange(){
+  const t = document.getElementById('fType').value;
+  const isBaby = t === 'baby';
+  document.getElementById('rowMonth').style.display = isBaby ? '' : 'none';
+  document.getElementById('rowCook').style.display = isBaby ? '' : 'none';
+  document.getElementById('rowCat').style.display = isBaby ? 'none' : '';
+  document.getElementById('rowSpicy').style.display = isBaby ? 'none' : '';
+}
+function saveRecipe(){
+  const id = document.getElementById('recipeId').value;
+  const type = document.getElementById('fType').value;
+  const name = document.getElementById('fName').value.trim();
+  if(!name){ toast('请输入菜名'); return; }
+  const data = {
+    type, name,
+    ing: document.getElementById('fIng').value.trim(),
+    source: document.getElementById('fSource').value.trim(),
+    note: document.getElementById('fNote').value.trim(),
+  };
+  if(type==='baby'){
+    data.month = document.getElementById('fMonth').value;
+    data.cook = document.getElementById('fCook').value;
+  }else{
+    data.cat = document.getElementById('fCat').value;
+    data.spicy = document.getElementById('fSpicy').value;
+  }
+  if(id){
+    const idx = recipes.findIndex(r=>r.id===id);
+    if(idx>=0){ recipes[idx] = {...recipes[idx], ...data}; }
+    toast('已更新');
+  }else{
+    data.id = uid();
+    recipes.push(data);
+    toast('已添加');
+  }
+  saveRecipes();
+  updateFilterCat();
+  renderRecipes();
+  closeRecipeModal();
+}
+function editRecipe(id){ openRecipeModal(id); }
+function delRecipe(id){
+  const r = recipes.find(x=>x.id===id);
+  if(!r) return;
+  if(confirm(`删除「${r.name}」吗？`)){
+    recipes = recipes.filter(x=>x.id!==id);
+    saveRecipes();
+    updateFilterCat();
+    renderRecipes();
+    toast('已删除');
+  }
+}
+
+/* ============ 今日菜单 ============ */
+function renderMeals(){
+  const wrap = document.getElementById('mealsList');
+  wrap.innerHTML = '';
+  MEALS.forEach(m=>{
+    const items = todayMenu[m.key] || [];
+    const div = document.createElement('div');
+    div.className = 'meal';
+    let itemsHtml = '';
+    if(items.length === 0){
+      itemsHtml = '<div class="meal-empty">还没有添加菜品，点右上角 + 添加</div>';
+    }else{
+      itemsHtml = items.map((it,i)=>`
+        <div class="meal-item ${it.type} ${it.done?'done':''}">
+          <input type="checkbox" class="chk" ${it.done?'checked':''} onchange="toggleDone('${m.key}',${i})">
+          <span class="nm">${it.type==='baby'?'👶':'👩'} ${escapeHtml(it.name)}</span>
+          <button class="del" onclick="delMealItem('${m.key}',${i})">×</button>
+        </div>
+      `).join('');
+    }
+    div.innerHTML = `
+      <div class="head">
+        <div class="t">${m.label} <span style="font-size:12px;color:var(--muted);font-weight:400">${items.length}道</span></div>
+        <button class="add-btn" onclick="openAddToday('${m.key}')">+ 添加</button>
+      </div>
+      ${itemsHtml}
+    `;
+    wrap.appendChild(div);
+  });
+}
+function toggleDone(mealKey, idx){
+  todayMenu[mealKey][idx].done = !todayMenu[mealKey][idx].done;
+  saveMenu();
+  renderMeals();
+}
+function delMealItem(mealKey, idx){
+  todayMenu[mealKey].splice(idx,1);
+  saveMenu();
+  renderMeals();
+}
+function openAddToday(mealKey){
+  currentAddMeal = mealKey;
+  const m = MEALS.find(x=>x.key===mealKey);
+  document.getElementById('addMealName').textContent = m.label;
+  const sel = document.getElementById('addRecipeSelect');
+  sel.innerHTML = '<optgroup label="👶 宝宝辅食"></optgroup><optgroup label="👩 大人餐"></optgroup>';
+  const babyGroup = sel.querySelectorAll('optgroup')[0];
+  const adultGroup = sel.querySelectorAll('optgroup')[1];
+  recipes.filter(r=>r.type==='baby').forEach(r=>{
+    const o = document.createElement('option');
+    o.value = r.id; o.textContent = `${r.name}（${r.month}）`;
+    babyGroup.appendChild(o);
+  });
+  recipes.filter(r=>r.type==='adult').forEach(r=>{
+    const o = document.createElement('option');
+    o.value = r.id; o.textContent = `${r.name}（${r.cat||''} ${r.spicy||''}）`;
+    adultGroup.appendChild(o);
+  });
+  document.getElementById('addTodayModal').classList.add('show');
+}
+function closeAddToday(){
+  document.getElementById('addTodayModal').classList.remove('show');
+}
+function confirmAddToday(){
+  const id = document.getElementById('addRecipeSelect').value;
+  const r = recipes.find(x=>x.id===id);
+  if(!r) return;
+  todayMenu[currentAddMeal].push({id:r.id, name:r.name, type:r.type, done:false});
+  saveMenu();
+  renderMeals();
+  closeAddToday();
+  toast(`已添加「${r.name}」`);
+}
+
+/* ============ 点餐抽餐 ============ */
+function doShake(){
+  let pool = recipes.filter(r=>{
+    if(pickType==='baby') return r.type==='baby';
+    if(pickType==='adult') return r.type==='adult';
+    return true;
+  });
+  if(pool.length === 0){ toast('菜谱库为空'); return; }
+  const card = document.getElementById('resultCard');
+  card.classList.add('shake-anim');
+  card.classList.remove('has');
+  let count = 0;
+  const total = 12;
+  const timer = setInterval(()=>{
+    const r = pool[Math.floor(Math.random()*pool.length)];
+    card.innerHTML = `<div class="rname">${escapeHtml(r.name)}</div>`;
+    count++;
+    if(count >= total){
+      clearInterval(timer);
+      card.classList.remove('shake-anim');
+      const final = pool[Math.floor(Math.random()*pool.length)];
+      showPickResult(card, final);
+    }
+  },80);
+}
+function showPickResult(card, r){
+  card.classList.add('has');
+  let tags = '';
+  if(r.type==='baby'){
+    tags = `<span class="tag month">${r.month}</span><span class="tag">${r.cook}</span>`;
+  }else{
+    tags = `<span class="tag cat">${r.cat||''}</span>`;
+    if(r.spicy && r.spicy!=='不辣') tags += `<span class="tag spicy">${r.spicy}</span>`;
+  }
+  card.innerHTML = `
+    <div style="font-size:11px;color:var(--muted);margin-bottom:4px">今天就吃这个 👇</div>
+    <div class="rname">${escapeHtml(r.name)}</div>
+    <div class="rtags">${tags}</div>
+    <div class="ring">${escapeHtml(r.ing||'')}</div>
+    <button class="add-today" onclick='addPickedToToday(${JSON.stringify(r).replace(/'/g,"&#39;")})'>＋ 加入今日菜单</button>
+  `;
+}
+function addPickedToToday(r){
+  // r is object; ask which meal
+  const mealKey = prompt('加入哪一餐？输入数字：1早餐 2午餐 3晚餐 4加餐','2');
+  const map = {'1':'breakfast','2':'lunch','3':'dinner','4':'snack'};
+  if(!map[mealKey]){ toast('已取消'); return; }
+  todayMenu[map[mealKey]].push({id:r.id||uid(), name:r.name, type:r.type, done:false});
+  saveMenu();
+  renderMeals();
+  toast(`已加入${MEALS.find(m=>m.key===map[mealKey]).label}`);
+}
+
+function doCombo(){
+  const adults = recipes.filter(r=>r.type==='adult');
+  if(adults.length < 2){ toast('大人餐菜谱不足'); return; }
+  // pick 2 dishes from different cats + 1 soup-ish
+  const card = document.getElementById('comboCard');
+  card.classList.add('shake-anim');
+  card.classList.remove('has');
+  let count = 0;
+  const timer = setInterval(()=>{
+    const a = adults[Math.floor(Math.random()*adults.length)];
+    const b = adults[Math.floor(Math.random()*adults.length)];
+    card.innerHTML = `<div class="rname">${escapeHtml(a.name)} + ${escapeHtml(b.name)}</div>`;
+    count++;
+    if(count >= 10){
+      clearInterval(timer);
+      card.classList.remove('shake-anim');
+      // final: pick from different categories
+      const byCat = {};
+      adults.forEach(r=>{ (byCat[r.cat]=byCat[r.cat]||[]).push(r); });
+      const cats = Object.keys(byCat);
+      let picks = [];
+      if(cats.length >= 2){
+        // pick 2 different cats
+        const shuffled = cats.sort(()=>Math.random()-0.5);
+        picks.push(byCat[shuffled[0]][0]);
+        picks.push(byCat[shuffled[1]][0]);
+      }else{
+        picks = [...adults].sort(()=>Math.random()-0.5).slice(0,2);
+      }
+      // pick a "soup" - look for 汤类 or just a third
+      const soups = adults.filter(r=>/汤|粥/.test(r.name));
+      if(soups.length) picks.push(soups[Math.floor(Math.random()*soups.length)]);
+      else if(adults.length>2) picks.push(adults.filter(r=>!picks.includes(r))[0]);
+
+      card.classList.add('has');
+      card.innerHTML = `
+        <div style="font-size:11px;color:var(--muted);margin-bottom:4px">两菜一汤搭配 👇</div>
+        ${picks.map(r=>`
+          <div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px dashed #eee;width:100%">
+            <span style="font-size:18px">🍽️</span>
+            <div style="flex:1;text-align:left">
+              <div style="font-weight:700">${escapeHtml(r.name)}</div>
+              <div style="font-size:11px;color:var(--muted)">${r.cat||''} ${r.spicy||''}</div>
+            </div>
+            <button class="add-today" style="padding:4px 10px;font-size:12px" onclick='addPickedToToday(${JSON.stringify(r).replace(/'/g,"&#39;")})'>加入</button>
+          </div>
+        `).join('')}
+      `;
+    }
+  },100);
+}
+
+/* ============ 食材清单 ============ */
+function renderShop(){
+  const wrap = document.getElementById('shopList');
+  // collect all ingredients from today's menu
+  const ingMap = {};  // name -> {qty, dishes:[], type}
+  let total = 0;
+  MEALS.forEach(m=>{
+    (todayMenu[m.key]||[]).forEach(it=>{
+      const r = recipes.find(x=>x.id===it.id);
+      if(!r || !r.ing) return;
+      r.ing.split(/[,，、]/).map(s=>s.trim()).filter(Boolean).forEach(name=>{
+        if(!ingMap[name]) ingMap[name] = {count:0, dishes:[], types:new Set()};
+        ingMap[name].count++;
+        ingMap[name].dishes.push(it.name);
+        ingMap[name].types.add(it.type);
+        total++;
+      });
+    });
+  });
+  const items = Object.entries(ingMap).sort((a,b)=>b[1].count - a[1].count);
+  if(items.length === 0){
+    wrap.innerHTML = '<div class="empty-state">今日菜单还没添加菜品<br>去"今日菜单"添加后会自动汇总食材</div>';
+    return;
+  }
+  wrap.innerHTML = items.map(([name, info])=>{
+    const checked = shopChecked[name] ? 'checked' : '';
+    const done = shopChecked[name] ? 'done' : '';
+    return `
+      <div class="shop-item ${done}">
+        <input type="checkbox" class="chk" ${checked} onchange="toggleShop('${escapeHtml(name)}')">
+        <span class="nm">${escapeHtml(name)}</span>
+        <span class="qt">${info.count}份 · ${[...info.types].map(t=>t==='baby'?'👶':'👩').join('')}</span>
+      </div>
+    `;
+  }).join('');
+}
+function toggleShop(name){
+  if(shopChecked[name]) delete shopChecked[name];
+  else shopChecked[name] = true;
+  saveShop();
+  renderShop();
+}
+function copyShopList(){
+  const ingMap = {};
+  MEALS.forEach(m=>{
+    (todayMenu[m.key]||[]).forEach(it=>{
+      const r = recipes.find(x=>x.id===it.id);
+      if(!r || !r.ing) return;
+      r.ing.split(/[,，、]/).map(s=>s.trim()).filter(Boolean).forEach(name=>{
+        ingMap[name] = (ingMap[name]||0)+1;
+      });
+    });
+  });
+  const items = Object.entries(ingMap).sort((a,b)=>b[1]-a[1]);
+  if(items.length === 0){ toast('今日还没添加菜品'); return; }
+  const date = document.getElementById('todayDate').value;
+  let text = `🛒 ${date} 采购清单\n`;
+  text += '────────\n';
+  items.forEach(([n,c])=>{ text += `☐ ${n}${c>1?` ×${c}`:''}\n`; });
+  text += '────────\n';
+  text += '共'+items.length+'种食材';
+  // try clipboard
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(text).then(()=>toast('已复制到剪贴板📋')).catch(()=>{
+      fallbackCopy(text);
+    });
+  }else{
+    fallbackCopy(text);
+  }
+}
+function fallbackCopy(text){
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position='fixed';ta.style.opacity='0';
+  document.body.appendChild(ta);
+  ta.select();
+  try{ document.execCommand('copy'); toast('已复制到剪贴板📋'); }
+  catch(e){ toast('复制失败，请手动选择'); }
+  document.body.removeChild(ta);
+}
+
+/* ============ 家人点餐云端同步（MantleDB） ============ */
+const CLOUD_URL = 'https://mantledb.sh/v2/nana-kitchen/orders';
+let familyOrders = [];  // [{id, who, recipeId, name, type, meal, note, time}]
+
+async function cloudRead(){
+  try{
+    const res = await fetch(CLOUD_URL);
+    if(!res.ok) return {orders:[]};
+    const data = await res.json();
+    return data || {orders:[]};
+  }catch(e){
+    console.error('cloudRead err', e);
+    return {orders:[]};
+  }
+}
+async function cloudWrite(orders){
+  try{
+    const res = await fetch(CLOUD_URL, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({orders, updatedAt: new Date().toISOString()})
+    });
+    return res.ok;
+  }catch(e){
+    console.error('cloudWrite err', e);
+    return false;
+  }
+}
+
+async function syncFamilyOrders(){
+  const status = document.getElementById('syncStatus');
+  status.textContent = '🔄 同步中...';
+  const data = await cloudRead();
+  familyOrders = data.orders || [];
+  // 只看今天的
+  const today = document.getElementById('todayDate').value;
+  familyOrders = familyOrders.filter(o => (o.time||'').startsWith(today));
+  const cnt = familyOrders.length;
+  const whoSet = new Set(familyOrders.map(o=>o.who));
+  status.textContent = cnt > 0
+    ? `✅ 已同步 ${cnt} 条点餐，来自 ${whoSet.size} 位家人（${[...whoSet].join('、')}）`
+    : '✅ 今日暂无家人点餐';
+  renderFamily();
+  toast('同步完成');
+}
+
+function renderFamily(){
+  const wrap = document.getElementById('familyList');
+  if(familyOrders.length === 0){
+    wrap.innerHTML = '<div class="empty-state">暂无家人点餐<br>点上方"分享二维码"让家人扫码点餐<br>或点"同步家人点餐"刷新</div>';
+    return;
+  }
+  // 按人分组
+  const byWho = {};
+  familyOrders.forEach(o=>{
+    if(!byWho[o.who]) byWho[o.who] = [];
+    byWho[o.who].push(o);
+  });
+  wrap.innerHTML = Object.entries(byWho).map(([who, list])=>{
+    return `
+      <div class="family-card">
+        <div class="fhead">
+          <span class="fname">👤 ${escapeHtml(who)}</span>
+          <span class="ftime">${list.length}道</span>
+        </div>
+        ${list.map(o=>`
+          <div>
+            <span class="fpick ${o.type}">${o.type==='baby'?'👶':'👩'} ${escapeHtml(o.name)}</span>
+            ${o.meal ? `<span style="font-size:11px;color:#999">${MEALS.find(m=>m.key===o.meal)?.label||o.meal}</span>` : ''}
+            ${o.note ? `<div class="fnote">💬 ${escapeHtml(o.note)}</div>` : ''}
+          </div>
+        `).join('')}
+        <div class="ftime" style="margin-top:6px">提交于 ${(list[0].time||'').slice(11,16)}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+function importFamilyOrders(){
+  if(familyOrders.length === 0){
+    toast('暂无家人点餐可导入');
+    return;
+  }
+  if(!confirm(`将 ${familyOrders.length} 道家人点餐导入今日菜单？\n（会按家人选择的餐次分类导入）`)) return;
+  let added = 0;
+  familyOrders.forEach(o=>{
+    const mealKey = o.meal || 'lunch';
+    if(!todayMenu[mealKey]) todayMenu[mealKey] = [];
+    // 避免重复
+    const exists = todayMenu[mealKey].some(it => it.name === o.name);
+    if(!exists){
+      todayMenu[mealKey].push({id:o.recipeId||uid(), name:o.name, type:o.type, done:false});
+      added++;
+    }
+  });
+  saveMenu();
+  renderMeals();
+  toast(`已导入 ${added} 道菜到今日菜单`);
+  // 切到今日菜单
+  document.querySelector('.tab[data-tab="menu"]').click();
+}
+
+/* —— 家人提交点餐到云端 —— */
+async function submitFamilyOrder(order){
+  // order: {who, recipeId, name, type, meal, note}
+  const data = await cloudRead();
+  const orders = data.orders || [];
+  order.id = 'o'+Date.now()+Math.floor(Math.random()*1000);
+  order.time = new Date().toLocaleString('sv-SE', {timeZone:'Asia/Shanghai'});
+  orders.push(order);
+  // 只保留最近200条，避免超容量
+  const trimmed = orders.slice(-200);
+  const ok = await cloudWrite(trimmed);
+  if(ok){
+    toast('已提交，等妈妈看到～');
+  }else{
+    toast('提交失败，请重试');
+  }
+  return ok;
+}
+
+/* —— 二维码分享 —— */
+function showQR(){
+  let url = new URL(window.location.href);
+  url.searchParams.set('mode', 'family');
+  url = url.toString();
+  const qrApi = 'https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=' + encodeURIComponent(url);
+  document.getElementById('qrImg').src = qrApi;
+  document.getElementById('qrUrl').textContent = url;
+  document.getElementById('qrMask').classList.add('show');
+}
+function closeQR(){
+  document.getElementById('qrMask').classList.remove('show');
+}
+
+/* ============ 家人点餐模式逻辑 ============ */
+function initFamilyMode(){
+  // 恢复身份
+  const who = localStorage.getItem('kitchen_who');
+  if(who) document.getElementById('fmWho').value = who;
+  document.getElementById('fmWho').oninput = (e)=>{
+    localStorage.setItem('kitchen_who', e.target.value);
+  };
+  document.getElementById('fmSearch').oninput = renderFmList;
+  document.getElementById('fmType').onchange = renderFmList;
+  renderFmList();
+  renderFmCart();
+}
+
+function renderFmList(){
+  const q = document.getElementById('fmSearch').value.trim().toLowerCase();
+  const type = document.getElementById('fmType').value;
+  const list = document.getElementById('fmList');
+  const filtered = recipes.filter(r=>{
+    if(q && !r.name.toLowerCase().includes(q) && !(r.ing||'').toLowerCase().includes(q)) return false;
+    if(type !== 'all' && r.type !== type) return false;
+    return true;
+  });
+  const babies = filtered.filter(r=>r.type==='baby');
+  const adults = filtered.filter(r=>r.type==='adult');
+  let html = '';
+  if(babies.length){
+    html += '<div class="sec-title"><span class="dot" style="background:var(--baby-accent)"></span>👶 宝宝辅食</div>';
+    html += babies.map(r=>fmCard(r)).join('');
+  }
+  if(adults.length){
+    html += '<div class="sec-title"><span class="dot" style="background:var(--adult-accent)"></span>👩 大人餐</div>';
+    html += adults.map(r=>fmCard(r)).join('');
+  }
+  if(!filtered.length) html = '<div class="empty-state">没找到相关菜</div>';
+  list.innerHTML = html;
+}
+
+function fmCard(r){
+  const inCart = fmCart.some(c=>c.recipeId===r.id);
+  let tags = '';
+  if(r.type==='baby'){
+    tags = `<span class="tag month">${r.month}</span><span class="tag">${r.cook}</span>`;
+  }else{
+    tags = `<span class="tag cat">${r.cat||''}</span>`;
+    if(r.spicy && r.spicy!=='不辣') tags += `<span class="tag spicy">${r.spicy}</span>`;
+  }
+  return `
+    <div class="card ${r.type}" style="margin-bottom:8px">
+      <div class="name">${escapeHtml(r.name)}</div>
+      <div class="tags">${tags}</div>
+      <div class="ing"><b>食材：</b>${escapeHtml(r.ing||'')}</div>
+      <button onclick="fmAdd('${r.id}')" style="margin-top:8px;width:100%;background:${inCart?'#ccc':'var(--primary)'};color:#fff;border:none;padding:8px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer">${inCart?'✓ 已加入点餐':'＋ 加入点餐'}</button>
+    </div>
+  `;
+}
+
+function fmAdd(id){
+  const r = recipes.find(x=>x.id===id);
+  if(!r) return;
+  if(fmCart.some(c=>c.recipeId===id)){
+    fmCart = fmCart.filter(c=>c.recipeId!==id);
+  }else{
+    const meal = prompt('这菜给哪一餐？输入数字：1早餐 2午餐 3晚餐 4加餐','2');
+    const map = {'1':'breakfast','2':'lunch','3':'dinner','4':'snack'};
+    const mealKey = map[meal] || 'lunch';
+    fmCart.push({recipeId:r.id, name:r.name, type:r.type, meal:mealKey, note:''});
+  }
+  renderFmList();
+  renderFmCart();
+}
+
+function renderFmCart(){
+  const cart = document.getElementById('fmCart');
+  const items = document.getElementById('fmCartItems');
+  if(fmCart.length === 0){
+    cart.style.display = 'none';
+    return;
+  }
+  cart.style.display = 'block';
+  items.innerHTML = fmCart.map((c,i)=>{
+    const mealLabel = MEALS.find(m=>m.key===c.meal)?.label || c.meal;
+    return `
+      <div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid #eee">
+        <span style="flex:1;font-size:14px">${c.type==='baby'?'👶':'👩'} ${escapeHtml(c.name)} <span style="font-size:11px;color:#999">${mealLabel}</span></span>
+        <button onclick="fmRemove(${i})" style="background:none;border:none;color:#c00;font-size:18px;cursor:pointer">×</button>
+      </div>
+    `;
+  }).join('');
+  document.getElementById('fmSubmitBtn').textContent = `提交点餐（${fmCart.length}道）`;
+}
+
+function fmRemove(idx){
+  fmCart.splice(idx,1);
+  renderFmList();
+  renderFmCart();
+}
+
+async function fmSubmit(){
+  const who = document.getElementById('fmWho').value.trim();
+  if(!who){ alert('请先填写"我是谁"'); return; }
+  if(fmCart.length === 0){ alert('请先选菜'); return; }
+  const btn = document.getElementById('fmSubmitBtn');
+  btn.textContent = '提交中...';
+  btn.disabled = true;
+  let okCount = 0;
+  for(const c of fmCart){
+    const ok = await submitFamilyOrder({who, ...c});
+    if(ok) okCount++;
+  }
+  if(okCount === fmCart.length){
+    btn.textContent = '✅ 提交成功！';
+    btn.style.background = 'var(--green)';
+    fmCart = [];
+    renderFmCart();
+    setTimeout(()=>{
+      btn.textContent = '提交点餐';
+      btn.disabled = false;
+      btn.style.background = 'var(--primary)';
+    }, 2000);
+    alert('点餐已提交！妈妈打开工作台点"同步"就能看到～');
+  }else{
+    btn.textContent = '提交点餐';
+    btn.disabled = false;
+    alert('部分提交失败，请重试');
+  }
+}
+
+/* ============ 启动 ============ */
+init();
+</script>
+</body>
 </html>

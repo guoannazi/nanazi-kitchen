@@ -267,18 +267,9 @@
   .qr-box .close{margin-top:10px;background:#eee;border:none;padding:8px 20px;border-radius:8px;cursor:pointer}
 
   /* Lazy mode */
-  .lazy-card{
-    background:linear-gradient(135deg,#fff0f5,#ffe4ec);
-    border:2px dashed #e87fa0;border-radius:18px;
-    padding:30px 20px;text-align:center;box-shadow:var(--shadow);
-  }
-  .lazy-card .lazy-icon{font-size:52px;margin-bottom:10px;animation:float 3s ease-in-out infinite}
-  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-  .lazy-card .lazy-title{font-size:22px;font-weight:700;color:#e06088;margin-bottom:8px}
-  .lazy-card .lazy-sub{font-size:14px;color:#a07080;margin-bottom:18px}
-  .lazy-card .lazy-back{
-    background:#e87fa0;color:#fff;border:none;padding:10px 24px;border-radius:20px;
-    font-size:15px;font-weight:600;cursor:pointer;
+  @keyframes stretch{
+    0%,100%{transform:scale(1) rotate(0deg)}
+    50%{transform:scale(1.15) rotate(-5deg)}
   }
   #lazyBtn.active{background:#e87fa0;color:#fff;border-style:solid}
 
@@ -367,36 +358,10 @@
     <div style="display:flex;gap:8px;margin-bottom:12px">
       <button id="lazyBtn" onclick="toggleLazy()" style="flex:1;background:#fff0f5;border:1.5px dashed #e87fa0;color:#e87fa0;padding:10px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer">今天不想做饭</button>
     </div>
-    <div id="lazyView" style="display:none">
-      <div class="lazy-card">
-        <div class="lazy-icon">
-          <svg viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg" style="width:110px;height:92px">
-            <!-- 沙发 -->
-            <rect x="10" y="55" width="100" height="30" rx="10" fill="#f8c8d8"/>
-            <rect x="5" y="45" width="20" height="45" rx="8" fill="#f0b0c8"/>
-            <rect x="95" y="45" width="20" height="45" rx="8" fill="#f0b0c8"/>
-            <!-- 枕头 -->
-            <ellipse cx="30" cy="58" rx="12" ry="8" fill="#fff"/>
-            <!-- 妈妈身体 -->
-            <ellipse cx="55" cy="62" rx="22" ry="10" fill="#e87fa0"/>
-            <!-- 头 -->
-            <circle cx="32" cy="56" r="9" fill="#ffd0b8"/>
-            <!-- 头发 -->
-            <path d="M22 52 Q32 40 42 52 Q40 58 32 58 Q24 58 22 52" fill="#5a3a40"/>
-            <!-- 闭着的眼睛 -->
-            <path d="M29 56 Q32 58 35 56" stroke="#5a3a40" stroke-width="1.2" fill="none"/>
-            <!-- 锅铲掉在地上 -->
-            <rect x="95" y="82" width="4" height="14" rx="1" fill="#b0a090"/>
-            <ellipse cx="97" cy="80" rx="6" ry="4" fill="#c0b0a0"/>
-            <!-- 休息气泡 -->
-            <circle cx="82" cy="35" r="14" fill="#fff" opacity="0.9"/>
-            <text x="82" y="40" text-anchor="middle" font-size="12" fill="#e87fa0" font-weight="700">Zzz</text>
-          </svg>
-        </div>
-        <div class="lazy-title">妈妈今天不想做饭</div>
-        <div class="lazy-sub">宝宝今天吃外卖 / 出去吃 / 爸爸做吧</div>
-        <button class="lazy-back" onclick="toggleLazy()">恢复营业</button>
-      </div>
+    <div id="lazyView" style="display:none;position:fixed;inset:0;background:linear-gradient(135deg,#fff0f5,#ffe4ec);z-index:999;display:none;flex-direction:column;align-items:center;justify-content:center;padding:20px">
+      <div style="font-size:120px;margin-bottom:30px;animation:stretch 3s ease-in-out infinite">🥱</div>
+      <div style="font-size:40px;font-weight:900;color:#e06088;text-align:center;line-height:1.3;letter-spacing:2px">妈妈今天<br>不想做饭</div>
+      <button onclick="toggleLazy()" style="margin-top:40px;background:rgba(255,255,255,.6);border:1.5px solid #e87fa0;color:#e87fa0;padding:10px 24px;border-radius:20px;font-size:14px;font-weight:600;cursor:pointer">恢复营业</button>
     </div>
     <div id="mealsList"></div>
   </div>
@@ -1047,7 +1012,7 @@ function renderMeals(){
     lazyBtn.textContent = lazyMode ? '恢复营业' : '今天不想做饭';
   }
   if(lazyView){
-    lazyView.style.display = lazyMode ? 'block' : 'none';
+    lazyView.style.display = lazyMode ? 'flex' : 'none';
   }
 
   wrap.innerHTML = '';

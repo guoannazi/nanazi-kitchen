@@ -10,21 +10,21 @@
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <style>
   :root{
-    --bg:#fdf8f3;
+    --bg:#fdf6f7;
     --card:#ffffff;
-    --text:#3d2f28;
-    --muted:#9a8a7e;
-    --border:#ece2d6;
-    --baby:#fff4d6;          /* 辅食柔黄 */
-    --baby-accent:#f0b400;
-    --baby-tag:#ffe27a;
-    --adult:#fde8e0;          /* 大人暖橙 */
-    --adult-accent:#e85a3c;
-    --adult-tag:#ffb4a0;
-    --primary:#e85a3c;
-    --primary-dark:#c94322;
+    --text:#4a3a40;
+    --muted:#a89098;
+    --border:#f0e0e4;
+    --baby:#fef0f4;          /* 辅食粉白 */
+    --baby-accent:#c898a8;
+    --baby-tag:#e8c8d4;
+    --adult:#fce8ec;          /* 大人浅粉 */
+    --adult-accent:#d8a0a8;
+    --adult-tag:#e8b4bc;
+    --primary:#d8a0a8;
+    --primary-dark:#b88a92;
     --green:#7cb342;
-    --shadow:0 2px 10px rgba(120,80,60,.08);
+    --shadow:0 2px 10px rgba(180,120,130,.10);
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   html,body{margin:0;padding:0}
@@ -38,10 +38,10 @@
   }
   /* Header */
   header{
-    background:linear-gradient(135deg,#e85a3c 0%,#f0b400 100%);
+    background:linear-gradient(135deg,#d8a0a8 0%,#c898a8 100%);
     color:#fff;
     padding:18px 16px 14px;
-    box-shadow:0 2px 12px rgba(232,90,60,.25);
+    box-shadow:0 2px 12px rgba(216,160,168,.25);
   }
   header h1{margin:0;font-size:20px;font-weight:700;letter-spacing:.5px}
   header .sub{font-size:12px;opacity:.9;margin-top:3px}
@@ -102,8 +102,8 @@
     position:relative;transition:transform .15s,box-shadow .15s;
   }
   .card:active{transform:scale(.98)}
-  .card.baby{background:var(--baby);border-color:#f5e4a3}
-  .card.adult{background:var(--adult);border-color:#f5c5b3}
+  .card.baby{background:var(--baby);border-color:#f5dce4}
+  .card.adult{background:var(--adult);border-color:#f0d0d8}
   .card .name{font-size:15px;font-weight:700;margin-bottom:5px;padding-right:60px}
   .card .tags{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px}
   .tag{
@@ -112,10 +112,16 @@
   }
   .card.baby .tag.month{background:var(--baby-accent);color:#fff}
   .card.adult .tag.cat{background:var(--adult-accent);color:#fff}
-  .tag.spicy{background:#ff5722;color:#fff}
+  .tag.spicy{background:#d86070;color:#fff}
   .card .ing{font-size:12px;color:#7a6a5e;line-height:1.4}
   .card .ing b{color:#5a4a3e}
   .card .note{font-size:11px;color:var(--muted);margin-top:4px;font-style:italic}
+  .card .thumb{
+    width:100%;height:90px;border-radius:8px;margin-bottom:8px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:42px;background:linear-gradient(135deg,#fce8ec,#fef0f4);
+  }
+  .card.baby .thumb{background:linear-gradient(135deg,#fef0f4,#f8e0e8)}
   .card .actions{position:absolute;top:8px;right:8px;display:flex;gap:4px}
   .card .actions button{
     background:rgba(255,255,255,.85);border:none;border-radius:6px;
@@ -155,7 +161,7 @@
   .meal .head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
   .meal .head .t{font-size:15px;font-weight:700;display:flex;align-items:center;gap:6px}
   .meal .head .add-btn{
-    background:#fff3ec;border:1px solid #f5c5b3;color:var(--adult-accent);
+    background:#fce8ec;border:1px solid #f0d0d8;color:var(--adult-accent);
     padding:5px 10px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;
   }
   .meal-item{
@@ -182,9 +188,9 @@
   }
   .pick-box .opts button.active{background:var(--primary);color:#fff;border-color:var(--primary)}
   .shake-btn{
-    background:linear-gradient(135deg,#e85a3c,#f0b400);color:#fff;border:none;
+    background:linear-gradient(135deg,#d8a0a8,#c898a8);color:#fff;border:none;
     padding:14px 30px;border-radius:30px;font-size:16px;font-weight:700;cursor:pointer;
-    box-shadow:0 4px 14px rgba(232,90,60,.35);
+    box-shadow:0 4px 14px rgba(216,160,168,.35);
   }
   .shake-btn:active{transform:scale(.95)}
   .result-card{
@@ -249,7 +255,7 @@
   .family-card .fname{font-weight:700;font-size:14px}
   .family-card .ftime{font-size:11px;color:var(--muted)}
   .family-card .fpick{
-    display:inline-block;background:#fff3ec;padding:3px 9px;border-radius:8px;
+    display:inline-block;background:#fce8ec;padding:3px 9px;border-radius:8px;
     font-size:13px;margin:2px 4px 2px 0;
   }
   .family-card .fpick.baby{background:var(--baby)}
@@ -312,7 +318,7 @@
 
 <!-- 家人点餐模式（简化版） -->
 <div id="familyMode" style="display:none">
-  <div style="padding:14px;background:linear-gradient(135deg,#e85a3c,#f0b400);color:#fff">
+  <div style="padding:14px;background:linear-gradient(135deg,#d8a0a8,#c898a8);color:#fff">
     <div style="font-size:17px;font-weight:700">🍴 娜娜子美妈厨房 · 家人点餐</div>
     <div style="font-size:12px;opacity:.9;margin-top:3px">选你想吃的菜，提交后妈妈就能看到</div>
   </div>
@@ -525,15 +531,15 @@
 /* ============ 预填菜谱数据 ============ */
 const SEED_RECIPES = [
   // 宝宝辅食（18个月+，可吃软烂大人饭，去掉基础泥类）
-  {id:'b1',type:'baby',name:'番茄鸡蛋面',month:'18M+',cook:'煮',ing:'婴儿面条,番茄,鸡蛋,青菜',source:'',note:'酸甜开胃，宝宝最爱'},
-  {id:'b2',type:'baby',name:'虾仁豆腐蒸蛋',month:'18M+',cook:'蒸',ing:'虾仁,嫩豆腐,鸡蛋',source:'',note:'高蛋白软嫩，检查虾过敏'},
+  {id:'b1',type:'baby',name:'番茄鸡蛋面',month:'18M+',cook:'煮',ing:'婴儿面条,番茄,鸡蛋,青菜',source:'',note:'酸甜开胃，宝宝最爱',img:'img/b1.png'},
+  {id:'b2',type:'baby',name:'虾仁豆腐蒸蛋',month:'18M+',cook:'蒸',ing:'虾仁,嫩豆腐,鸡蛋',source:'',note:'高蛋白软嫩，检查虾过敏',img:'img/b2.png'},
   {id:'b3',type:'baby',name:'山药排骨汤',month:'18M+',cook:'炖',ing:'山药,排骨,枸杞,姜',source:'',note:'健脾养胃，汤可下面'},
-  {id:'b4',type:'baby',name:'蔬菜蛋饼',month:'18M+',cook:'煎',ing:'鸡蛋,胡萝卜,西葫芦,面粉',source:'',note:'手指食物，锻炼抓握'},
+  {id:'b4',type:'baby',name:'蔬菜蛋饼',month:'18M+',cook:'煎',ing:'鸡蛋,胡萝卜,西葫芦,面粉',source:'',note:'手指食物，锻炼抓握',img:'img/b4.png'},
   {id:'b5',type:'baby',name:'胡萝卜肉末焖饭',month:'18M+',cook:'炖',ing:'大米,胡萝卜,猪肉末,洋葱',source:'',note:'一锅出，营养均衡'},
   {id:'b6',type:'baby',name:'鳕鱼蔬菜粥',month:'18M+',cook:'煮',ing:'鳕鱼,大米,西兰花,姜',source:'',note:'DHA丰富，去刺'},
   {id:'b7',type:'baby',name:'鸡肝菠菜粥',month:'18M+',cook:'煮',ing:'鸡肝,菠菜,大米,柠檬',source:'',note:'补铁补血，每周1-2次'},
   {id:'b8',type:'baby',name:'番茄牛肉面',month:'18M+',cook:'煮',ing:'婴儿面条,牛肉末,番茄,洋葱',source:'',note:'补铁补蛋白'},
-  {id:'b9',type:'baby',name:'南瓜小米粥',month:'18M+',cook:'煮',ing:'南瓜,小米',source:'',note:'养胃好消化'},
+  {id:'b9',type:'baby',name:'南瓜小米粥',month:'18M+',cook:'煮',ing:'南瓜,小米',source:'',note:'养胃好消化',img:'img/b9.png'},
   {id:'b10',type:'baby',name:'三文鱼西兰花饭',month:'18M+',cook:'蒸',ing:'三文鱼,西兰花,大米',source:'',note:'Omega-3丰富'},
   {id:'b11',type:'baby',name:'猪肉白菜小馄饨',month:'18M+',cook:'煮',ing:'馄饨皮,猪肉末,白菜',source:'',note:'可多做冷冻，随吃随煮'},
   {id:'b12',type:'baby',name:'土豆胡萝卜炖牛肉',month:'18M+',cook:'炖',ing:'牛肉,土豆,胡萝卜,洋葱',source:'',note:'炖烂一些，宝宝易嚼'},
@@ -542,7 +548,7 @@ const SEED_RECIPES = [
   {id:'b15',type:'baby',name:'鲜虾蔬菜饭团',month:'18M+',cook:'蒸',ing:'虾仁,胡萝卜,大米,海苔',source:'',note:'可爱造型，宝宝更爱'},
   // 大人餐
   // —— 江西辣鸡爪 / 凉拌 ——
-  {id:'a1',type:'adult',name:'江西辣鸡爪',cat:'江西辣鸡爪',spicy:'重辣',ing:'鸡爪,小米椒,蒜,生抽,醋,柠檬',source:'收藏',note:'先煮后拌，冷藏更入味'},
+  {id:'a1',type:'adult',name:'江西辣鸡爪',cat:'江西辣鸡爪',spicy:'重辣',ing:'鸡爪,小米椒,蒜,生抽,醋,柠檬',source:'收藏',note:'先煮后拌，冷藏更入味',img:'img/a1.png'},
   {id:'a2',type:'adult',name:'柠檬无骨鸡爪',cat:'江西辣鸡爪',spicy:'中辣',ing:'无骨鸡爪,柠檬,小米椒,蒜,香菜',source:'收藏',note:'懒人版，去骨更过瘾'},
   {id:'a3',type:'adult',name:'蒜香鸡爪',cat:'江西辣鸡爪',spicy:'微辣',ing:'鸡爪,蒜,生抽,蚝油,辣椒',source:'收藏',note:'蒜香浓郁'},
   {id:'a4',type:'adult',name:'泡椒鸡爪',cat:'江西辣鸡爪',spicy:'重辣',ing:'鸡爪,泡椒,芹菜,胡萝卜,白醋',source:'收藏',note:'冷藏过夜更入味'},
@@ -550,20 +556,20 @@ const SEED_RECIPES = [
   {id:'a5',type:'adult',name:'南昌拌粉',cat:'面食',spicy:'中辣',ing:'米粉,花生米,萝卜干,辣椒酱',source:'收藏',note:'米粉提前泡软'},
   {id:'a6',type:'adult',name:'江西炒粉',cat:'面食',spicy:'中辣',ing:'米粉,瘦肉,青菜,辣椒',source:'收藏',note:'大火快炒'},
   {id:'a7',type:'adult',name:'兰州拉面',cat:'面食',spicy:'微辣',ing:'拉面,牛肉,萝卜,香菜,辣油',source:'收藏',note:'汤要清亮'},
-  {id:'a8',type:'adult',name:'葱油拌面',cat:'面食',spicy:'不辣',ing:'面条,小葱,生抽,糖,油',source:'收藏',note:'葱要炸到焦香'},
+  {id:'a8',type:'adult',name:'葱油拌面',cat:'面食',spicy:'不辣',ing:'面条,小葱,生抽,糖,油',source:'收藏',note:'葱要炸到焦香',img:'img/a8.png'},
   {id:'a9',type:'adult',name:'武汉热干面',cat:'面食',spicy:'微辣',ing:'碱面,芝麻酱,萝卜丁,香葱',source:'收藏',note:'芝麻酱是灵魂'},
   {id:'a10',type:'adult',name:'油泼面',cat:'面食',spicy:'中辣',ing:'宽面,辣椒面,蒜,葱,生抽,醋',source:'收藏',note:'热油浇辣椒面刺啦一声'},
   {id:'a11',type:'adult',name:'酸辣粉',cat:'面食',spicy:'重辣',ing:'红薯粉,花生,黄豆,醋,辣椒',source:'收藏',note:'酸辣开胃'},
   {id:'a12',type:'adult',name:'炸酱面',cat:'面食',spicy:'不辣',ing:'面条,五花肉末,黄酱,黄瓜丝',source:'收藏',note:'老北京做法'},
   // —— 排骨 ——
-  {id:'a13',type:'adult',name:'红烧排骨',cat:'排骨',spicy:'微辣',ing:'排骨,生抽,老抽,冰糖,八角',source:'收藏',note:'炒糖色是关键'},
+  {id:'a13',type:'adult',name:'红烧排骨',cat:'排骨',spicy:'微辣',ing:'排骨,生抽,老抽,冰糖,八角',source:'收藏',note:'炒糖色是关键',img:'img/a13.png'},
   {id:'a14',type:'adult',name:'糖醋排骨',cat:'排骨',spicy:'不辣',ing:'排骨,醋,糖,生抽,料酒',source:'收藏',note:'酸甜口，宝宝可吃（少糖版）'},
   {id:'a15',type:'adult',name:'蒜香排骨',cat:'排骨',spicy:'不辣',ing:'排骨,大蒜,生抽,蜂蜜',source:'收藏',note:'蒜要剁碎腌制'},
   {id:'a16',type:'adult',name:'粉蒸排骨',cat:'排骨',spicy:'不辣',ing:'排骨,蒸肉米粉,红薯,土豆',source:'收藏',note:'垫底红薯吸油增香'},
   {id:'a17',type:'adult',name:'豆豉排骨',cat:'排骨',spicy:'微辣',ing:'排骨,豆豉,蒜,生抽,辣椒',source:'收藏',note:'蒸出来超嫩'},
   {id:'a18',type:'adult',name:'排骨莲藕汤',cat:'排骨',spicy:'不辣',ing:'排骨,莲藕,姜,枸杞',source:'收藏',note:'湖北做法，藕要粉'},
   // —— 鸡翅 ——
-  {id:'a19',type:'adult',name:'可乐鸡翅',cat:'鸡翅',spicy:'不辣',ing:'鸡翅,可乐,生抽,姜',source:'收藏',note:'收汁要浓稠'},
+  {id:'a19',type:'adult',name:'可乐鸡翅',cat:'鸡翅',spicy:'不辣',ing:'鸡翅,可乐,生抽,姜',source:'收藏',note:'收汁要浓稠',img:'img/a19.png'},
   {id:'a20',type:'adult',name:'孜然鸡翅',cat:'鸡翅',spicy:'中辣',ing:'鸡翅,孜然,辣椒粉,生抽',source:'收藏',note:'烤箱版更香'},
   {id:'a21',type:'adult',name:'柠檬鸡翅',cat:'鸡翅',spicy:'微辣',ing:'鸡翅,柠檬,蜂蜜,生抽',source:'收藏',note:'柠檬去腥增香'},
   {id:'a22',type:'adult',name:'奥尔良烤翅',cat:'鸡翅',spicy:'微辣',ing:'鸡翅,奥尔良腌料,蜂蜜',source:'收藏',note:'烤箱200度20分钟'},
@@ -575,14 +581,14 @@ const SEED_RECIPES = [
   {id:'a27',type:'adult',name:'啤酒鸭',cat:'鸡鸭',spicy:'微辣',ing:'鸭肉,啤酒,土豆,青椒,姜',source:'收藏',note:'啤酒去腥增香'},
   {id:'a28',type:'adult',name:'啤酒鸡',cat:'鸡鸭',spicy:'微辣',ing:'整鸡,啤酒,土豆,生抽,姜',source:'收藏',note:'一锅出，下饭'},
   // —— 鱼虾海鲜 ——
-  {id:'a29',type:'adult',name:'蒜蓉粉丝蒸虾',cat:'鱼虾海鲜',spicy:'微辣',ing:'虾,粉丝,蒜,生抽',source:'收藏',note:'蒸5分钟即可'},
+  {id:'a29',type:'adult',name:'蒜蓉粉丝蒸虾',cat:'鱼虾海鲜',spicy:'微辣',ing:'虾,粉丝,蒜,生抽',source:'收藏',note:'蒸5分钟即可',img:'img/a29.png'},
   {id:'a30',type:'adult',name:'油焖大虾',cat:'鱼虾海鲜',spicy:'不辣',ing:'虾,番茄酱,生抽,糖,葱',source:'收藏',note:'色泽红亮'},
   {id:'a31',type:'adult',name:'清蒸鲈鱼',cat:'鱼虾海鲜',spicy:'不辣',ing:'鲈鱼,葱,姜,蒸鱼豉油',source:'收藏',note:'8分钟，肉质嫩'},
   {id:'a32',type:'adult',name:'红烧带鱼',cat:'鱼虾海鲜',spicy:'微辣',ing:'带鱼,生抽,老抽,糖,面粉',source:'收藏',note:'先煎再烧'},
   {id:'a33',type:'adult',name:'香辣虾',cat:'鱼虾海鲜',spicy:'重辣',ing:'虾,土豆,芹菜,干辣椒,花椒',source:'收藏',note:'先炸后炒'},
   {id:'a34',type:'adult',name:'蒜蓉生蚝',cat:'鱼虾海鲜',spicy:'不辣',ing:'生蚝,蒜,粉丝,小米椒',source:'收藏',note:'烤箱版'},
   // —— 家常小炒 ——
-  {id:'a35',type:'adult',name:'辣椒炒肉',cat:'家常小炒',spicy:'中辣',ing:'五花肉,青椒,蒜,生抽',source:'收藏',note:'湖南下饭菜'},
+  {id:'a35',type:'adult',name:'辣椒炒肉',cat:'家常小炒',spicy:'中辣',ing:'五花肉,青椒,蒜,生抽',source:'收藏',note:'湖南下饭菜',img:'img/a35.png'},
   {id:'a36',type:'adult',name:'回锅肉',cat:'家常小炒',spicy:'中辣',ing:'五花肉,蒜苗,豆瓣酱,豆豉',source:'收藏',note:'肉要先煮再炒'},
   {id:'a37',type:'adult',name:'麻婆豆腐',cat:'家常小炒',spicy:'中辣',ing:'嫩豆腐,肉末,豆瓣酱,花椒,蒜',source:'收藏',note:'麻辣烫鲜香'},
   {id:'a38',type:'adult',name:'干煸四季豆',cat:'家常小炒',spicy:'中辣',ing:'四季豆,肉末,干辣椒,蒜',source:'收藏',note:'豆角一定要煸透'},
@@ -593,13 +599,13 @@ const SEED_RECIPES = [
   {id:'a43',type:'adult',name:'干锅花菜',cat:'家常小炒',spicy:'微辣',ing:'花菜,五花肉,干辣椒,蒜,生抽',source:'收藏',note:'花菜不要焯水'},
   {id:'a44',type:'adult',name:'鱼香肉丝',cat:'家常小炒',spicy:'微辣',ing:'里脊肉,木耳,胡萝卜,笋,豆瓣酱',source:'收藏',note:'鱼香味靠泡椒'},
   // —— 汤羹 ——
-  {id:'a45',type:'adult',name:'瓦罐汤',cat:'汤羹',spicy:'不辣',ing:'排骨,莲藕,姜,盐',source:'收藏',note:'小火慢炖3小时'},
+  {id:'a45',type:'adult',name:'瓦罐汤',cat:'汤羹',spicy:'不辣',ing:'排骨,莲藕,姜,盐',source:'收藏',note:'小火慢炖3小时',img:'img/a45.png'},
   {id:'a46',type:'adult',name:'番茄蛋花汤',cat:'汤羹',spicy:'不辣',ing:'番茄,鸡蛋,葱,香油',source:'收藏',note:'快手汤3分钟'},
   {id:'a47',type:'adult',name:'酸萝卜老鸭汤',cat:'汤羹',spicy:'不辣',ing:'鸭肉,酸萝卜,姜,枸杞',source:'收藏',note:'酸爽开胃'},
   {id:'a48',type:'adult',name:'玉米排骨汤',cat:'汤羹',spicy:'不辣',ing:'排骨,玉米,胡萝卜,姜',source:'收藏',note:'清甜不腻'},
   {id:'a49',type:'adult',name:'鲫鱼豆腐汤',cat:'汤羹',spicy:'不辣',ing:'鲫鱼,豆腐,姜,葱,料酒',source:'收藏',note:'汤奶白的关键是先煎鱼'},
   // —— 村驴菜系 ——
-  {id:'a50',type:'adult',name:'村驴红烧肉',cat:'村驴菜系',spicy:'微辣',ing:'五花肉,冰糖,生抽,八角,桂皮',source:'村驴视频',note:'肥而不腻，下饭神器'},
+  {id:'a50',type:'adult',name:'村驴红烧肉',cat:'村驴菜系',spicy:'微辣',ing:'五花肉,冰糖,生抽,八角,桂皮',source:'村驴视频',note:'肥而不腻，下饭神器',img:'img/a50.png'},
   {id:'a51',type:'adult',name:'村驴水煮鱼',cat:'村驴菜系',spicy:'重辣',ing:'草鱼,豆芽,干辣椒,花椒,豆瓣酱',source:'村驴视频',note:'鱼片要嫩滑'},
   {id:'a52',type:'adult',name:'村驴干煸豆角',cat:'村驴菜系',spicy:'中辣',ing:'四季豆,肉末,干辣椒,蒜',source:'村驴视频',note:'豆角一定要煸透'},
   {id:'a53',type:'adult',name:'村驴地三鲜',cat:'村驴菜系',spicy:'微辣',ing:'茄子,土豆,青椒,蒜,生抽',source:'村驴视频',note:'东北经典，村驴做法'},
@@ -609,7 +615,7 @@ const SEED_RECIPES = [
 ];
 
 /* ============ 数据层 ============ */
-const STORAGE_KEY = 'kitchen_recipes_v2';
+const STORAGE_KEY = 'kitchen_recipes_v3';
 const MENU_KEY = 'kitchen_menu_v1';
 const SHOP_KEY = 'kitchen_shop_v1';
 
@@ -848,11 +854,16 @@ function makeCard(r){
     tags += `<span class="tag cat">${r.cat||'其他'}</span>`;
     if(r.spicy && r.spicy !== '不辣') tags += `<span class="tag spicy">${r.spicy}</span>`;
   }
+  const emoji = recipeEmoji(r);
+  const thumb = r.img
+    ? `<img src="${r.img}" style="width:100%;height:90px;object-fit:cover;border-radius:8px;margin-bottom:8px" alt="${escapeHtml(r.name)}">`
+    : `<div class="thumb">${emoji}</div>`;
   div.innerHTML = `
     <div class="actions">
       <button onclick="editRecipe('${r.id}')" title="编辑">✏️</button>
       <button onclick="delRecipe('${r.id}')" title="删除">🗑️</button>
     </div>
+    ${thumb}
     <div class="name">${escapeHtml(r.name)}</div>
     <div class="tags">${tags}</div>
     <div class="ing"><b>食材：</b>${escapeHtml(r.ing||'未填')}</div>
@@ -860,6 +871,16 @@ function makeCard(r){
     ${r.note ? `<div class="note">${escapeHtml(r.note)}</div>` : ''}
   `;
   return div;
+}
+
+function recipeEmoji(r){
+  if(r.type==='baby'){
+    const map = {'番茄鸡蛋面':'🍅🍜','虾仁豆腐蒸蛋':'🦐🥚','山药排骨汤':'🥣','蔬菜蛋饼':'🥞','胡萝卜肉末焖饭':'🥕🍚','鳕鱼蔬菜粥':'🐟🥣','鸡肝菠菜粥':'🥬🥣','番茄牛肉面':'🍅🍜','南瓜小米粥':'🎃🥣','三文鱼西兰花饭':'🐟🍚','猪肉白菜小馄饨':'🥟','土豆胡萝卜炖牛肉':'🥩🥕','奶香玉米烙':'🌽','鸡蛋疙瘩汤':'🍳🥣','鲜虾蔬菜饭团':'🍤🍚'};
+    return map[r.name] || '🍳';
+  }
+  const cat = r.cat || '';
+  const catMap = {'江西辣鸡爪':'🌶️','面食':'🍜','排骨':'🍖','鸡翅':'🍗','鸡鸭':'🐔','鱼虾海鲜':'🦐','家常小炒':'🍳','汤羹':'🥣','村驴菜系':'👨‍🍳'};
+  return catMap[cat] || '🍽️';
 }
 
 function escapeHtml(s){
@@ -1399,6 +1420,7 @@ function fmCard(r){
   }
   return `
     <div class="card ${r.type}" style="margin-bottom:8px">
+      <div class="thumb" style="${r.type==='baby'?'background:linear-gradient(135deg,#fef0f4,#f8e0e8)':''}">${recipeEmoji(r)}</div>
       <div class="name">${escapeHtml(r.name)}</div>
       <div class="tags">${tags}</div>
       <div class="ing"><b>食材：</b>${escapeHtml(r.ing||'')}</div>

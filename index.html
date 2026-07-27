@@ -365,14 +365,37 @@
   <!-- 今日菜单 -->
   <div class="panel active" id="panel-menu">
     <div style="display:flex;gap:8px;margin-bottom:12px">
-      <button id="lazyBtn" onclick="toggleLazy()" style="flex:1;background:#fff0f5;border:1.5px dashed #e87fa0;color:#e87fa0;padding:10px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer">😴 今天不想做饭</button>
+      <button id="lazyBtn" onclick="toggleLazy()" style="flex:1;background:#fff0f5;border:1.5px dashed #e87fa0;color:#e87fa0;padding:10px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer">今天不想做饭</button>
     </div>
     <div id="lazyView" style="display:none">
       <div class="lazy-card">
-        <div class="lazy-icon">🛋️🥄😴</div>
+        <div class="lazy-icon">
+          <svg viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg" style="width:110px;height:92px">
+            <!-- 沙发 -->
+            <rect x="10" y="55" width="100" height="30" rx="10" fill="#f8c8d8"/>
+            <rect x="5" y="45" width="20" height="45" rx="8" fill="#f0b0c8"/>
+            <rect x="95" y="45" width="20" height="45" rx="8" fill="#f0b0c8"/>
+            <!-- 枕头 -->
+            <ellipse cx="30" cy="58" rx="12" ry="8" fill="#fff"/>
+            <!-- 妈妈身体 -->
+            <ellipse cx="55" cy="62" rx="22" ry="10" fill="#e87fa0"/>
+            <!-- 头 -->
+            <circle cx="32" cy="56" r="9" fill="#ffd0b8"/>
+            <!-- 头发 -->
+            <path d="M22 52 Q32 40 42 52 Q40 58 32 58 Q24 58 22 52" fill="#5a3a40"/>
+            <!-- 闭着的眼睛 -->
+            <path d="M29 56 Q32 58 35 56" stroke="#5a3a40" stroke-width="1.2" fill="none"/>
+            <!-- 锅铲掉在地上 -->
+            <rect x="95" y="82" width="4" height="14" rx="1" fill="#b0a090"/>
+            <ellipse cx="97" cy="80" rx="6" ry="4" fill="#c0b0a0"/>
+            <!-- 休息气泡 -->
+            <circle cx="82" cy="35" r="14" fill="#fff" opacity="0.9"/>
+            <text x="82" y="40" text-anchor="middle" font-size="12" fill="#e87fa0" font-weight="700">Zzz</text>
+          </svg>
+        </div>
         <div class="lazy-title">妈妈今天不想做饭</div>
         <div class="lazy-sub">宝宝今天吃外卖 / 出去吃 / 爸爸做吧</div>
-        <button class="lazy-back" onclick="toggleLazy()">👩‍🍳 恢复营业</button>
+        <button class="lazy-back" onclick="toggleLazy()">恢复营业</button>
       </div>
     </div>
     <div id="mealsList"></div>
@@ -1021,7 +1044,7 @@ function renderMeals(){
   // 懒洋洋模式开关显示
   if(lazyBtn){
     lazyBtn.classList.toggle('active', lazyMode);
-    lazyBtn.textContent = lazyMode ? '👩‍🍳 恢复营业' : '😴 今天不想做饭';
+    lazyBtn.textContent = lazyMode ? '恢复营业' : '今天不想做饭';
   }
   if(lazyView){
     lazyView.style.display = lazyMode ? 'block' : 'none';

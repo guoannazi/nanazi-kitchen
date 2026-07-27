@@ -10,21 +10,21 @@
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <style>
   :root{
-    --bg:#fdf6f7;
+    --bg:#fff5f7;
     --card:#ffffff;
     --text:#4a3a40;
     --muted:#a89098;
-    --border:#f0e0e4;
-    --baby:#fef0f4;          /* 辅食粉白 */
-    --baby-accent:#c898a8;
-    --baby-tag:#e8c8d4;
-    --adult:#fce8ec;          /* 大人浅粉 */
-    --adult-accent:#d8a0a8;
-    --adult-tag:#e8b4bc;
-    --primary:#d8a0a8;
-    --primary-dark:#b88a92;
+    --border:#f5d8e0;
+    --baby:#fff0f5;          /* 辅食粉白 */
+    --baby-accent:#e87fa0;
+    --baby-tag:#ffc8d8;
+    --adult:#ffe4ec;          /* 大人亮粉 */
+    --adult-accent:#e87fa0;
+    --adult-tag:#ffb4c8;
+    --primary:#e87fa0;
+    --primary-dark:#d06088;
     --green:#7cb342;
-    --shadow:0 2px 10px rgba(180,120,130,.10);
+    --shadow:0 2px 10px rgba(220,100,140,.12);
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   html,body{margin:0;padding:0}
@@ -38,10 +38,10 @@
   }
   /* Header */
   header{
-    background:linear-gradient(135deg,#d8a0a8 0%,#c898a8 100%);
+    background:linear-gradient(135deg,#e87fa0 0%,#ffb4c8 100%);
     color:#fff;
     padding:18px 16px 14px;
-    box-shadow:0 2px 12px rgba(216,160,168,.25);
+    box-shadow:0 2px 12px rgba(232,127,160,.25);
   }
   header h1{margin:0;font-size:20px;font-weight:700;letter-spacing:.5px}
   header .sub{font-size:12px;opacity:.9;margin-top:3px}
@@ -102,8 +102,8 @@
     position:relative;transition:transform .15s,box-shadow .15s;
   }
   .card:active{transform:scale(.98)}
-  .card.baby{background:var(--baby);border-color:#f5dce4}
-  .card.adult{background:var(--adult);border-color:#f0d0d8}
+  .card.baby{background:var(--baby);border-color:#ffd8e4}
+  .card.adult{background:var(--adult);border-color:#ffc0d0}
   .card .name{font-size:15px;font-weight:700;margin-bottom:5px;padding-right:60px}
   .card .tags{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px}
   .tag{
@@ -161,7 +161,7 @@
   .meal .head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
   .meal .head .t{font-size:15px;font-weight:700;display:flex;align-items:center;gap:6px}
   .meal .head .add-btn{
-    background:#fce8ec;border:1px solid #f0d0d8;color:var(--adult-accent);
+    background:#ffe4ec;border:1px solid #ffc0d0;color:var(--adult-accent);
     padding:5px 10px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;
   }
   .meal-item{
@@ -188,9 +188,9 @@
   }
   .pick-box .opts button.active{background:var(--primary);color:#fff;border-color:var(--primary)}
   .shake-btn{
-    background:linear-gradient(135deg,#d8a0a8,#c898a8);color:#fff;border:none;
+    background:linear-gradient(135deg,#e87fa0,#ffb4c8);color:#fff;border:none;
     padding:14px 30px;border-radius:30px;font-size:16px;font-weight:700;cursor:pointer;
-    box-shadow:0 4px 14px rgba(216,160,168,.35);
+    box-shadow:0 4px 14px rgba(232,127,160,.35);
   }
   .shake-btn:active{transform:scale(.95)}
   .result-card{
@@ -255,7 +255,7 @@
   .family-card .fname{font-weight:700;font-size:14px}
   .family-card .ftime{font-size:11px;color:var(--muted)}
   .family-card .fpick{
-    display:inline-block;background:#fce8ec;padding:3px 9px;border-radius:8px;
+    display:inline-block;background:#ffe4ec;padding:3px 9px;border-radius:8px;
     font-size:13px;margin:2px 4px 2px 0;
   }
   .family-card .fpick.baby{background:var(--baby)}
@@ -318,7 +318,7 @@
 
 <!-- 家人点餐模式（简化版） -->
 <div id="familyMode" style="display:none">
-  <div style="padding:14px;background:linear-gradient(135deg,#d8a0a8,#c898a8);color:#fff">
+  <div style="padding:14px;background:linear-gradient(135deg,#e87fa0,#ffb4c8);color:#fff">
     <div style="font-size:17px;font-weight:700">🍴 娜娜子美妈厨房 · 家人点餐</div>
     <div style="font-size:12px;opacity:.9;margin-top:3px">选你想吃的菜，提交后妈妈就能看到</div>
   </div>
@@ -616,7 +616,7 @@ const SEED_RECIPES = [
 
 /* ============ 数据层 ============ */
 const STORAGE_KEY = 'kitchen_recipes_v3';
-const MENU_KEY = 'kitchen_menu_v1';
+const MENU_KEY = 'kitchen_menu_v2';
 const SHOP_KEY = 'kitchen_shop_v1';
 
 let recipes = loadRecipes();
@@ -991,7 +991,7 @@ function renderMeals(){
       itemsHtml = items.map((it,i)=>`
         <div class="meal-item ${it.type} ${it.done?'done':''}">
           <input type="checkbox" class="chk" ${it.done?'checked':''} onchange="toggleDone('${m.key}',${i})">
-          <span class="nm">${it.type==='baby'?'👶':'👩'} ${escapeHtml(it.name)}</span>
+          <span class="nm">${it.type==='baby'?'👶':'👩'} ${escapeHtml(it.name)}${it.who?` <span style="font-size:11px;color:var(--primary);font-weight:600">（${escapeHtml(it.who)}点）</span>`:''}</span>
           <button class="del" onclick="delMealItem('${m.key}',${i})">×</button>
         </div>
       `).join('');
@@ -1324,10 +1324,10 @@ function importFamilyOrders(){
   familyOrders.forEach(o=>{
     const mealKey = o.meal || 'lunch';
     if(!todayMenu[mealKey]) todayMenu[mealKey] = [];
-    // 避免重复
-    const exists = todayMenu[mealKey].some(it => it.name === o.name);
+    // 避免重复（同名+同人视为重复）
+    const exists = todayMenu[mealKey].some(it => it.name === o.name && it.who === o.who);
     if(!exists){
-      todayMenu[mealKey].push({id:o.recipeId||uid(), name:o.name, type:o.type, done:false});
+      todayMenu[mealKey].push({id:o.recipeId||uid(), name:o.name, type:o.type, done:false, who:o.who});
       added++;
     }
   });
